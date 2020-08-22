@@ -1,5 +1,8 @@
 package main;
 
+import io.ControllerManager;
+import io.InputManager;
+import io.KeyManager;
 import io.Window;
 import util.MapLoader;
 import util.Tilesets;
@@ -14,9 +17,15 @@ public class Game {
 	private boolean running;
 	private GameState gameState;
 	private Window window;
+	private KeyManager keys;
+	private ControllerManager controller;
+	private InputManager input;
 
 	public Game() {
-		window = new Window("Enginemon", 640, 480);
+		keys = new KeyManager();
+		controller = new ControllerManager();
+		input = new InputManager(keys, controller);
+		window = new Window("Enginemon", 640, 480, keys);
 	}
 	
 	/**
@@ -59,7 +68,7 @@ public class Game {
 			}
 			
 			if(timer > 1000000000) {
-				//System.out.println("FPS: " + frames);
+				System.out.println("FPS: " + frames);
 				frames = 0;
 				timer = 0;
 			}
@@ -87,6 +96,7 @@ public class Game {
 	 */
 	private void tick() {
 		window.tick(gameState);
+		input.tick();
 	}
 	
 	/**

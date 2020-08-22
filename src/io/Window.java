@@ -24,7 +24,7 @@ public class Window {
 	
 	private BufferedImage[] currentTiles;
 	
-	public Window(String title, int width, int height) {
+	public Window(String title, int width, int height, KeyManager keys) {
 		this.title = title;
 		this.width = width;
 		this.height = height;
@@ -41,7 +41,7 @@ public class Window {
 		canvas.setSize(new Dimension(width, height));
 		canvas.setVisible(true);
 		canvas.setFocusable(true);
-		//canvas.addKeyListener(keys);
+		canvas.addKeyListener(keys);
 		
 		frame.add(canvas);
 		frame.pack();
