@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import main.Game;
 import main.Game.GameState;
 import util.MapLoader;
 import util.Tilesets;
