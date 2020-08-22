@@ -1,8 +1,8 @@
 package events;
 
-public class Event {
+public class EventStream {
 
-	public Event() {
+	public EventStream() {
 		
 	}
 	

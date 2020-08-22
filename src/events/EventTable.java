@@ -2,8 +2,8 @@ package events;
 
 public class EventTable {
 	
-	public static Event getEvent(int eventID) {
-		return new Event();
+	public static EventStream getEvent(int eventID) {
+		return new EventStream();
 	}
 
 }

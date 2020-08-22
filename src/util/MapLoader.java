@@ -7,14 +7,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import entities.Entity;
 import entities.EntityTable;
-import events.Event;
+import events.EventStream;
 import events.EventTable;
 
 public class MapLoader {
 	
 	private static HashMap<Integer, HashMap<Integer, int[][]>> tileData = new HashMap<Integer, HashMap<Integer, int[][]>>();
 	private static HashMap<Integer, HashMap<Integer, int[][]>> collisionData = new HashMap<Integer, HashMap<Integer, int[][]>>();
-	private static HashMap<Integer, HashMap<Integer, Event[]>> eventData = new HashMap<Integer, HashMap<Integer, Event[]>>();
+	private static HashMap<Integer, HashMap<Integer, EventStream[]>> eventData = new HashMap<Integer, HashMap<Integer, EventStream[]>>();
 	private static HashMap<Integer, HashMap<Integer, Entity[]>> entityData = new HashMap<Integer, HashMap<Integer, Entity[]>>();
 	private static HashMap<Integer, HashMap<Integer, Integer>> tilesetIDs = new HashMap<Integer, HashMap<Integer, Integer>>();
 	private static HashMap<Integer, HashMap<Integer, Integer>> musicIDs = new HashMap<Integer, HashMap<Integer, Integer>>();
@@ -22,7 +22,7 @@ public class MapLoader {
 	
 	public static int[][] currentTileData;
 	public static int[][] currentCollisionData;
-	public static Event[] currentEventData;
+	public static EventStream[] currentEventData;
 	public static Entity[] currentEntityData;
 	public static int currentTilesetID;
 	public static int currentMusicID;
@@ -71,7 +71,7 @@ public class MapLoader {
 			}
 			
 			int numberOfEvents = Integer.parseInt(br.readLine());
-			Event[] events = new Event[numberOfEvents];
+			EventStream[] events = new EventStream[numberOfEvents];
 			
 			if(numberOfEvents > 0) {
 				String[] eventTokens = br.readLine().trim().split("\\s+");
@@ -109,7 +109,7 @@ public class MapLoader {
 				collisionData.get(regionID).put(mapID, collisions);
 				entityData.put(regionID, new HashMap<Integer, Entity[]>());
 				entityData.get(regionID).put(mapID, entities);
-				eventData.put(regionID, new HashMap<Integer, Event[]>());
+				eventData.put(regionID, new HashMap<Integer, EventStream[]>());
 				eventData.get(regionID).put(mapID, events);
 				tilesetIDs.put(regionID, new HashMap<Integer, Integer>());
 				tilesetIDs.get(regionID).put(mapID, tilesetID);
