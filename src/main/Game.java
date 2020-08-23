@@ -68,7 +68,7 @@ public class Game {
 			}
 			
 			if(timer > 1000000000) {
-				System.out.println("FPS: " + frames);
+				//System.out.println("FPS: " + frames);
 				frames = 0;
 				timer = 0;
 			}

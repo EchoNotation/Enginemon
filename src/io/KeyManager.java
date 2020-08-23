@@ -3,7 +3,7 @@ package io;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import util.Variables;
+import util.ControlMap;
 
 public class KeyManager implements KeyListener {
 	private boolean upS, downS, leftS, rightS, confirmS, cancelS, menuS, functionS;
@@ -55,7 +55,7 @@ public class KeyManager implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {		
-		if(e.getKeyCode() == Variables.upKey) {
+		if(e.getKeyCode() == ControlMap.upKey) {
 			upR = true;
 			
 			if(upS) {
@@ -63,7 +63,7 @@ public class KeyManager implements KeyListener {
 				upS = false;
 			}
 		}
-		else if(e.getKeyCode() == Variables.downKey) {
+		else if(e.getKeyCode() == ControlMap.downKey) {
 			downR = true;
 			
 			if(downS) {
@@ -71,7 +71,7 @@ public class KeyManager implements KeyListener {
 				downS = false;
 			}
 		}
-		else if(e.getKeyCode() == Variables.leftKey) {
+		else if(e.getKeyCode() == ControlMap.leftKey) {
 			leftR = true;
 			
 			if(leftS) {
@@ -79,7 +79,7 @@ public class KeyManager implements KeyListener {
 				leftS = false;
 			}
 		}
-		else if(e.getKeyCode() == Variables.rightKey) {
+		else if(e.getKeyCode() == ControlMap.rightKey) {
 			rightR = true;
 			
 			if(rightS) {
@@ -87,7 +87,7 @@ public class KeyManager implements KeyListener {
 				rightS = false;
 			}
 		}
-		else if(e.getKeyCode() == Variables.confirmKey) {
+		else if(e.getKeyCode() == ControlMap.confirmKey) {
 			confirmR = true;
 			
 			if(confirmS) {
@@ -95,7 +95,7 @@ public class KeyManager implements KeyListener {
 				confirmS = false;
 			}
 		}
-		else if(e.getKeyCode() == Variables.cancelKey) {
+		else if(e.getKeyCode() == ControlMap.cancelKey) {
 			cancelR = true;
 			
 			if(cancelS) {
@@ -103,7 +103,7 @@ public class KeyManager implements KeyListener {
 				cancelS = false;
 			}
 		}
-		else if(e.getKeyCode() == Variables.menuKey) {
+		else if(e.getKeyCode() == ControlMap.menuKey) {
 			menuR = true;
 			
 			if(menuS) {
@@ -111,7 +111,7 @@ public class KeyManager implements KeyListener {
 				menuS = false;
 			}
 		}
-		else if(e.getKeyCode() == Variables.functionKey) {
+		else if(e.getKeyCode() == ControlMap.functionKey) {
 			functionR = true;
 			
 			if(functionS) {
@@ -127,35 +127,35 @@ public class KeyManager implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode() == Variables.upKey) {
+		if(e.getKeyCode() == ControlMap.upKey) {
 			upR = false;
 			upS = true;
 		}
-		else if(e.getKeyCode() == Variables.downKey) {
+		else if(e.getKeyCode() == ControlMap.downKey) {
 			downR = false;
 			downS = true;
 		}
-		else if(e.getKeyCode() == Variables.leftKey) {
+		else if(e.getKeyCode() == ControlMap.leftKey) {
 			leftR = false;
 			leftS = true;
 		}
-		else if(e.getKeyCode() == Variables.rightKey) {
+		else if(e.getKeyCode() == ControlMap.rightKey) {
 			rightR = false;
 			rightS = true;
 		}
-		else if(e.getKeyCode() == Variables.confirmKey) {
+		else if(e.getKeyCode() == ControlMap.confirmKey) {
 			confirmR = false;
 			confirmS = true;
 		}
-		else if(e.getKeyCode() == Variables.cancelKey) {
+		else if(e.getKeyCode() == ControlMap.cancelKey) {
 			cancelR = false;
 			cancelS = true;
 		}
-		else if(e.getKeyCode() == Variables.menuKey) {
+		else if(e.getKeyCode() == ControlMap.menuKey) {
 			menuR = false;
 			menuS = true;
 		}
-		else if(e.getKeyCode() == Variables.functionKey) {
+		else if(e.getKeyCode() == ControlMap.functionKey) {
 			functionR = false;
 			functionS = true;
 		}
