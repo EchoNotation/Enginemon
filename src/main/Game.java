@@ -1,9 +1,12 @@
 package main;
 
+import entities.Player;
+import io.Camera;
 import io.ControllerManager;
 import io.InputManager;
 import io.KeyManager;
 import io.Window;
+import io.Camera.CameraMode;
 import util.MapLoader;
 import util.Tilesets;
 
@@ -20,6 +23,8 @@ public class Game {
 	private KeyManager keys;
 	private ControllerManager controller;
 	private InputManager input;
+	private Player player;
+	private Camera camera;
 
 	public Game() {
 		keys = new KeyManager();
@@ -38,6 +43,11 @@ public class Game {
 		MapLoader.swapToMap(1, 1);
 		Tilesets.loadTilesets();
 		Tilesets.changeTileset(0);
+		player = new Player();
+		camera = new Camera(player);
+		camera.changeCameraMode(CameraMode.FOCUS_ON_PLAYER);
+		player.setXPos(0);
+		player.setYPos(0);
 		run();
 	}
 	
@@ -68,7 +78,7 @@ public class Game {
 			}
 			
 			if(timer > 1000000000) {
-				//System.out.println("FPS: " + frames);
+				System.out.println("FPS: " + frames);
 				frames = 0;
 				timer = 0;
 			}
@@ -95,7 +105,32 @@ public class Game {
 	 * Called exactly once every frame, all game and render logic starts here.
 	 */
 	private void tick() {
-		window.tick(gameState);
+		switch(gameState) {
+		case WORLD:
+			if(input.up) {
+				player.setYPos(player.getYPos() - 1);
+			}
+			if(input.down) {
+				player.setYPos(player.getYPos() + 1);
+			}
+			if(input.left) {
+				player.setXPos(player.getXPos() - 1);
+			}
+			if(input.right) {
+				player.setXPos(player.getXPos() + 1);
+			}
+			break;
+		case BATTLE:
+			break;
+		case MENU:
+			break;
+		default:
+			break;
+		}
+		
+		player.tick();
+		camera.tick();
+		window.tick(gameState, camera);
 		input.tick();
 	}
 	

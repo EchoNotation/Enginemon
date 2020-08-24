@@ -18,8 +18,6 @@ public class Tilesets {
 	private static final GraphicsConfiguration GFX_CONFIG = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 	private static int numberOfTilesets = 1;
 	private static int numberOfTilesPerSet = 8;
-	private static int tileWidth = 16;
-	private static int tileHeight = 16;
 	private static int numberOfTilesPerRow = 8;
 	private static BufferedImage[] currentTiles;
 	private static BufferedImage[][] tilesets;
@@ -47,10 +45,14 @@ public class Tilesets {
 			BufferedImage fullImage = ImageIO.read(new File(filepath));
 			
 			int numberOfRows = numberOfTilesPerSet / numberOfTilesPerRow;
+			int size = Constants.pixelsPerTile;
+
+			
 			for(int i = 0; i < numberOfRows; i++) {
 				int offset = i * numberOfTilesPerRow;
+				
 				for(int j = 0; j < numberOfTilesPerRow; j++) {
-					BufferedImage img = fullImage.getSubimage(j * tileWidth, i * tileHeight, tileWidth, tileHeight);				
+					BufferedImage img = fullImage.getSubimage(j * size, i * size, size, size);				
 					tiles[offset + j] = toCompatibleImage(img);
 				}
 			}

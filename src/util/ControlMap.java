@@ -2,7 +2,7 @@ package util;
 
 import java.awt.event.KeyEvent;
 
-import io.ControllerManager.Controls;
+import io.ControllerManager.Actions;
 
 public class ControlMap {
 
@@ -15,24 +15,24 @@ public class ControlMap {
 	public static int cancelKey = KeyEvent.VK_Z;
 	public static int menuKey = KeyEvent.VK_S;
 	public static int functionKey = KeyEvent.VK_A;
-	public static Controls xAxisPos = Controls.UNASSIGNED;
-	public static Controls xAxisNeg = Controls.UNASSIGNED;
-	public static Controls yAxisPos = Controls.UNASSIGNED; 
-	public static Controls yAxisNeg = Controls.UNASSIGNED;
-	public static Controls x2AxisPos = Controls.UNASSIGNED;
-	public static Controls x2AxisNeg = Controls.UNASSIGNED;
-	public static Controls y2AxisPos = Controls.UNASSIGNED;
-	public static Controls y2AxisNeg = Controls.UNASSIGNED;
-	public static Controls zAxisPos = Controls.UNASSIGNED;
-	public static Controls zAxisNeg = Controls.UNASSIGNED;
-	public static Controls povTL = Controls.UNASSIGNED;
-	public static Controls povTM = Controls.UNASSIGNED;
-	public static Controls povTR = Controls.UNASSIGNED;
-	public static Controls povR = Controls.UNASSIGNED;
-	public static Controls povBR = Controls.UNASSIGNED;
-	public static Controls povBM = Controls.UNASSIGNED;
-	public static Controls povBL = Controls.UNASSIGNED;
-	public static Controls povL = Controls.UNASSIGNED;
-	public static Controls[] buttons = new Controls[20];
+	public static Actions xAxisPos = Actions.UNASSIGNED;
+	public static Actions xAxisNeg = Actions.UNASSIGNED;
+	public static Actions yAxisPos = Actions.UNASSIGNED; 
+	public static Actions yAxisNeg = Actions.UNASSIGNED;
+	public static Actions x2AxisPos = Actions.UNASSIGNED;
+	public static Actions x2AxisNeg = Actions.UNASSIGNED;
+	public static Actions y2AxisPos = Actions.UNASSIGNED;
+	public static Actions y2AxisNeg = Actions.UNASSIGNED;
+	public static Actions zAxisPos = Actions.UNASSIGNED;
+	public static Actions zAxisNeg = Actions.UNASSIGNED;
+	public static Actions povTL = Actions.UNASSIGNED;
+	public static Actions povTM = Actions.UNASSIGNED;
+	public static Actions povTR = Actions.UNASSIGNED;
+	public static Actions povR = Actions.UNASSIGNED;
+	public static Actions povBR = Actions.UNASSIGNED;
+	public static Actions povBM = Actions.UNASSIGNED;
+	public static Actions povBL = Actions.UNASSIGNED;
+	public static Actions povL = Actions.UNASSIGNED;
+	public static Actions[] buttons = new Actions[20];
 	
 }

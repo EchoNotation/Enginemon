@@ -138,6 +138,9 @@ public class MapLoader {
 		currentTilesetID = tilesetIDs.get(regionID).get(mapID);
 		currentMusicID = musicIDs.get(regionID).get(mapID);
 		currentEncounterTableID = encounterTableIDs.get(regionID).get(mapID);
+		
+		Variables.currentRegionID = regionID;
+		Variables.currentMapID = mapID;
 	}
 	
 }

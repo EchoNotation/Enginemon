@@ -8,7 +8,7 @@ import net.java.games.input.EventQueue;
 import util.ControlMap;
 
 public class ControllerManager {
-	public enum Controls {
+	public enum Actions {
 		UP,
 		DOWN,
 		LEFT,
@@ -18,6 +18,28 @@ public class ControllerManager {
 		MENU,
 		FUNCTION,
 		UNASSIGNED;
+	}
+	
+	public enum Controls {
+		X_AXIS_POS,
+		X_AXIS_NEG,
+		Y_AXIS_POS,
+		Y_AXIS_NEG,
+		Z_AXIS_POS,
+		Z_AXIS_NEG,
+		X2_AXIS_POS,
+		X2_AXIS_NEG,
+		Y2_AXIS_POS,
+		Y2_AXIS_NEG,
+		POV_TL,
+		POV_TM,
+		POV_TR,
+		POV_R,
+		POV_BR,
+		POV_BM,
+		POV_BL,
+		POV_L,
+		BUTTON;
 	}
 	
 	private boolean upS, downS, leftS, rightS, confirmS, cancelS, menuS, functionS;
@@ -37,7 +59,7 @@ public class ControllerManager {
 		functionS = true;
 		
 		for(int i = 0; i < ControlMap.buttons.length; i++) {
-			ControlMap.buttons[i] = Controls.UNASSIGNED;
+			ControlMap.buttons[i] = Actions.UNASSIGNED;
 		}
 		
 		loadControllerSettings();
@@ -88,7 +110,7 @@ public class ControllerManager {
 		        //System.out.println(comp.getIdentifier());	        
 		        //System.out.println(comp.getPollData());
 		        float value = comp.getPollData();
-		        Controls action = Controls.UNASSIGNED;
+		        Actions action = Actions.UNASSIGNED;
 		        boolean pressed = false;
 		        
 		        if(comp.getIdentifier().toString().compareTo("x") == 0) {
@@ -298,7 +320,7 @@ public class ControllerManager {
 		}
 	}
 	
-	private void manageControls(Controls action, boolean pressed) {
+	private void manageControls(Actions action, boolean pressed) {
 		switch(action) {
 		case UP:
 			upR = pressed;
@@ -397,14 +419,78 @@ public class ControllerManager {
 	}
 	
 	public void loadControllerSettings() {
-		ControlMap.povTM = Controls.UP;
-		ControlMap.povL = Controls.LEFT;
-		ControlMap.povR = Controls.RIGHT;
-		ControlMap.povBM = Controls.DOWN;
-		ControlMap.buttons[0] = Controls.CANCEL;
-		ControlMap.buttons[1] = Controls.CONFIRM;
-		ControlMap.buttons[2] = Controls.FUNCTION;
-		ControlMap.buttons[3] = Controls.MENU;
+		ControlMap.povTM = Actions.UP;
+		ControlMap.povL = Actions.LEFT;
+		ControlMap.povR = Actions.RIGHT;
+		ControlMap.povBM = Actions.DOWN;
+		ControlMap.buttons[0] = Actions.CANCEL;
+		ControlMap.buttons[1] = Actions.CONFIRM;
+		ControlMap.buttons[2] = Actions.FUNCTION;
+		ControlMap.buttons[3] = Actions.MENU;
 	}
 	
+	public void rebindControl(Actions action, Controls control, int buttonID) {
+		switch(control) {
+		case BUTTON:
+			ControlMap.buttons[buttonID] = action;
+			break;
+		case POV_BL:
+			ControlMap.povBL = action;
+			break;
+		case POV_BM:
+			ControlMap.povBM = action;
+			break;
+		case POV_BR:
+			ControlMap.povBR = action;
+			break;
+		case POV_L:
+			ControlMap.povL = action;
+			break;
+		case POV_R:
+			ControlMap.povR = action;
+			break;
+		case POV_TL:
+			ControlMap.povTL = action;
+			break;
+		case POV_TM:
+			ControlMap.povTM = action;
+			break;
+		case POV_TR:
+			ControlMap.povTR = action;
+			break;
+		case X2_AXIS_NEG:
+			ControlMap.x2AxisNeg = action;
+			break;
+		case X2_AXIS_POS:
+			ControlMap.x2AxisPos = action;
+			break;
+		case X_AXIS_NEG:
+			ControlMap.xAxisNeg = action;
+			break;
+		case X_AXIS_POS:
+			ControlMap.xAxisPos = action;
+			break;
+		case Y2_AXIS_NEG:
+			ControlMap.y2AxisNeg = action;
+			break;
+		case Y2_AXIS_POS:
+			ControlMap.y2AxisPos = action;
+			break;
+		case Y_AXIS_NEG:
+			ControlMap.yAxisNeg = action;
+			break;
+		case Y_AXIS_POS:
+			ControlMap.yAxisPos = action;
+			break;
+		case Z_AXIS_NEG:
+			ControlMap.zAxisNeg = action;
+			break;
+		case Z_AXIS_POS:
+			ControlMap.zAxisPos = action;
+			break;
+		default:
+			break;
+		
+		}
+	}
 }
