@@ -55,12 +55,6 @@ public class Camera {
 		int startY = focusY - (cameraTileHeight - 1) / 2;
 		int endY = focusY + (cameraTileHeight - 1) / 2;
 		
-		//Not exactly sure why this is needed, but it seems to check out.
-//		startX++;
-//		startY++;
-//		endX++;
-//		endY++;
-		
 		//System.out.println("SX: " + startX + " EX: " + endX + " SY: " + startY + " EY: " + endY);
 		
 		int validTileCount = 0;

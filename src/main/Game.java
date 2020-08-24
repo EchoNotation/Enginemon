@@ -165,6 +165,10 @@ public class Game {
 					Variables.movingOverTile = true;
 					Variables.moveDir = MoveDirection.RIGHT;
 				}
+				
+				if(Variables.movingOverTile) {
+					Variables.tileCrossSpeed = input.cancelR ? Constants.pixelsPerFrameRunning : Constants.pixelsPerFrameWalking;
+				}
 			}
 			else {
 				Variables.movementOffset += Variables.tileCrossSpeed;
