@@ -55,7 +55,13 @@ public class Camera {
 		int startY = focusY - (cameraTileHeight - 1) / 2;
 		int endY = focusY + (cameraTileHeight - 1) / 2;
 		
-		System.out.println("SX: " + startX + " EX: " + endX + " SY: " + startY + " EY: " + endY);
+		//Not exactly sure why this is needed, but it seems to check out.
+//		startX++;
+//		startY++;
+//		endX++;
+//		endY++;
+		
+		//System.out.println("SX: " + startX + " EX: " + endX + " SY: " + startY + " EY: " + endY);
 		
 		int validTileCount = 0;
 		
@@ -77,9 +83,7 @@ public class Camera {
 	
 	public Entity[] getEntitiesInView() {
 		Entity[] entities = MapLoader.currentEntityData;
-		ArrayList<Entity> entitiesToDraw = new ArrayList<Entity>();
-		
-		entitiesToDraw.add(player);
+		ArrayList<Entity> entitiesToDraw = new ArrayList<Entity>();		
 		
 		int startX = focusX - (cameraTileWidth - 1) / 2;
 		int startY = focusY - (cameraTileHeight - 1) / 2;
@@ -96,6 +100,10 @@ public class Camera {
 		}
 		
 		return entitiesToDraw.toArray(new Entity[entitiesToDraw.size()]);
+	}
+	
+	public Player getPlayer() {
+		return player;
 	}
 	
 	public int getFocusX() {

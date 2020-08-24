@@ -7,14 +7,24 @@ import io.InputManager;
 import io.KeyManager;
 import io.Window;
 import io.Camera.CameraMode;
+import util.Constants;
 import util.MapLoader;
 import util.Tilesets;
+import util.Variables;
 
 public class Game {
 	public enum GameState {
 		MENU,
 		WORLD,
 		BATTLE;
+	}
+	
+	public enum MoveDirection {
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT,
+		NONE;
 	}
 	
 	private boolean running;
@@ -30,7 +40,7 @@ public class Game {
 		keys = new KeyManager();
 		controller = new ControllerManager();
 		input = new InputManager(keys, controller);
-		window = new Window("Enginemon", 640, 480, keys);
+		window = new Window("Enginemon", 720, 624, keys);
 	}
 	
 	/**
@@ -39,6 +49,7 @@ public class Game {
 	public void init() {
 		running = true;
 		gameState = GameState.WORLD;
+		
 		MapLoader.loadMap(1, 1);
 		MapLoader.swapToMap(1, 1);
 		Tilesets.loadTilesets();
@@ -107,17 +118,8 @@ public class Game {
 	private void tick() {
 		switch(gameState) {
 		case WORLD:
-			if(input.up) {
-				player.setYPos(player.getYPos() - 1);
-			}
-			if(input.down) {
-				player.setYPos(player.getYPos() + 1);
-			}
-			if(input.left) {
-				player.setXPos(player.getXPos() - 1);
-			}
-			if(input.right) {
-				player.setXPos(player.getXPos() + 1);
+			if(!Variables.lockPlayerMovement) {
+				standardPlayerMovement();
 			}
 			break;
 		case BATTLE:
@@ -132,6 +134,68 @@ public class Game {
 		camera.tick();
 		window.tick(gameState, camera);
 		input.tick();
+	}
+	
+	public void standardPlayerMovement() {
+		if(Variables.movingOverTile) {
+			if(Variables.movementOffset >= Constants.pixelsPerTile) {
+				player.setXPos(player.getTgtXPos());
+				player.setYPos(player.getTgtYPos());
+				Variables.movementOffset = 0;
+				Variables.movingOverTile = false;
+				Variables.moveDir = MoveDirection.NONE;
+				
+				if(input.upR) {
+					player.setTgtYPos(player.getYPos() - 1);
+					Variables.movingOverTile = true;
+					Variables.moveDir = MoveDirection.UP;
+				}
+				else if(input.downR) {
+					player.setTgtYPos(player.getYPos() + 1);
+					Variables.movingOverTile = true;
+					Variables.moveDir = MoveDirection.DOWN;
+				}
+				else if(input.leftR) {
+					player.setTgtXPos(player.getXPos() - 1);
+					Variables.movingOverTile = true;
+					Variables.moveDir = MoveDirection.LEFT;
+				}
+				else if(input.rightR) {
+					player.setTgtXPos(player.getXPos() + 1);
+					Variables.movingOverTile = true;
+					Variables.moveDir = MoveDirection.RIGHT;
+				}
+			}
+			else {
+				Variables.movementOffset += Variables.tileCrossSpeed;
+			}
+		}
+		else {
+			if(input.upR) {
+				player.setTgtYPos(player.getYPos() - 1);
+				Variables.movingOverTile = true;
+				Variables.moveDir = MoveDirection.UP;
+			}
+			else if(input.downR) {
+				player.setTgtYPos(player.getYPos() + 1);
+				Variables.movingOverTile = true;
+				Variables.moveDir = MoveDirection.DOWN;
+			}
+			else if(input.leftR) {
+				player.setTgtXPos(player.getXPos() - 1);
+				Variables.movingOverTile = true;
+				Variables.moveDir = MoveDirection.LEFT;
+			}
+			else if(input.rightR) {
+				player.setTgtXPos(player.getXPos() + 1);
+				Variables.movingOverTile = true;
+				Variables.moveDir = MoveDirection.RIGHT;
+			}
+			
+			if(Variables.movingOverTile) {
+				Variables.tileCrossSpeed = input.cancelR ? Constants.pixelsPerFrameRunning : Constants.pixelsPerFrameWalking;
+			}
+		}		
 	}
 	
 	/**

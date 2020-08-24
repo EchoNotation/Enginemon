@@ -12,6 +12,7 @@ import entities.Entity;
 import main.Game.GameState;
 import util.Constants;
 import util.Tilesets;
+import util.Variables;
 
 public class Window {
 	private JFrame frame;
@@ -19,8 +20,9 @@ public class Window {
 	private String title;
 	private int width, height;
 	
-	private int tilesPerColumn = Constants.cameraTileHeight - 2;
-	private int tilesPerRow = Constants.cameraTileWidth - 2;
+	private int tilesPerColumn = Constants.cameraTileHeight;
+	private int tilesPerRow = Constants.cameraTileWidth;
+	private int pixelsPerTile = Constants.pixelsPerTile;
 
 	private BufferedImage[] currentTileset;
 	
@@ -65,11 +67,42 @@ public class Window {
 		Graphics g = bs.getDrawGraphics();
 		
 		g.clearRect(0, 0, width, height);
-		BufferedImage img = new BufferedImage(Constants.pixelsPerTile * tilesPerRow, Constants.pixelsPerTile * tilesPerColumn, currentTileset[0].getType());
+		BufferedImage img = new BufferedImage(pixelsPerTile * tilesPerRow, pixelsPerTile * tilesPerColumn, currentTileset[0].getType());
+		
+		//System.out.println("img height: " + img.getHeight());
 		
 		if(gameState == GameState.WORLD) {
-			img = renderEntities(renderBackground(img, camera.getTilesInView()), camera.getEntitiesInView());
-			g.drawImage(img, 0, 0, width, height, null);
+			BufferedImage prePlayerImg = renderEntities(renderBackground(img, camera.getTilesInView()), camera.getEntitiesInView());
+			
+			int xOffset = 0;
+			int yOffset = 0;
+			
+			switch(Variables.moveDir) {
+			case UP:
+				yOffset = -Variables.movementOffset;
+				break;
+			case DOWN:
+				yOffset = Variables.movementOffset;
+				break;
+			case LEFT:
+				xOffset = -Variables.movementOffset;
+				break;
+			case RIGHT:
+				xOffset = Variables.movementOffset;
+				break;
+			case NONE:
+				break;
+			default:
+				System.out.println("Invalid moveDir when calculating x and y offsets! Direction: " + Variables.moveDir);
+				break;
+			}
+			
+			//System.out.println("pixelsPerTile + yOffset: " + (pixelsPerTile + yOffset) + " Height: " + pixelsPerTile * (tilesPerRow - 2));
+			//System.out.println("prePlayerImg height: " + prePlayerImg.getHeight());
+			BufferedImage shiftedImg = prePlayerImg.getSubimage(pixelsPerTile + xOffset, pixelsPerTile + yOffset, pixelsPerTile * (tilesPerRow - 2), pixelsPerTile * (tilesPerColumn - 2));
+			BufferedImage finalImg = renderPlayer(shiftedImg);
+			
+			g.drawImage(finalImg, 0, 0, width, height, null);
 		}
 		
 		bs.show();
@@ -90,15 +123,20 @@ public class Window {
 		int widthOffset = ((Constants.cameraTileWidth - 3) * 8) + 2;
 		int heightOffset = ((Constants.cameraTileHeight - 3) * 8) + 2;
 				
-		for(int i = 0; i < entitiesToDraw.length; i++) {
-			//Check if this is the player or not
-			
-			img.getGraphics().setColor(Color.WHITE);
-			//This is only correct for the player.
-			img.getGraphics().fillRect(widthOffset, heightOffset, 12, 12);
-			//Other entities should use this line...
-			//img.getGraphics().fillRect((entitiesToDraw[i].getXPos() * 16) + widthOffset, (entitiesToDraw[i].getYPos() * 16) + heightOffset, 12, 12);
+		for(int i = 0; i < entitiesToDraw.length; i++) {					
+			img.getGraphics().setColor(Color.GRAY);
+			img.getGraphics().fillRect((entitiesToDraw[i].getXPos() * 16) + widthOffset, (entitiesToDraw[i].getYPos() * 16) + heightOffset, 12, 12);
 		}
+		
+		return img;
+	}
+	
+	private BufferedImage renderPlayer(BufferedImage img) {
+		int widthOffset = ((Constants.cameraTileWidth - 3) * 8) + 2;
+		int heightOffset = ((Constants.cameraTileHeight - 3) * 8) + 2;
+		
+		img.getGraphics().setColor(Color.WHITE);
+		img.getGraphics().fillRect(widthOffset, heightOffset, 12, 12);
 		
 		return img;
 	}
