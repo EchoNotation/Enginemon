@@ -46,7 +46,7 @@ public class Game {
 	/**
 	 * Called to start the game immediately after construction.
 	 */
-	public void init() {
+	public void init() {		
 		running = true;
 		gameState = GameState.WORLD;
 		

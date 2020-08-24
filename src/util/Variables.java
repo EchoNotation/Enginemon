@@ -4,6 +4,9 @@ import main.Game.MoveDirection;
 
 public class Variables {
 	
+	//ClassLoader
+	public static boolean runningAsJar = false;
+	
 	//Location:
 	public static int currentRegionID;
 	public static int currentMapID;

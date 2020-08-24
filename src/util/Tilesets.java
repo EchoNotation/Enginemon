@@ -6,6 +6,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
@@ -39,11 +40,19 @@ public class Tilesets {
 	 */
 	private static BufferedImage[] loadTileset(int tilesetID) {
 		BufferedImage[] tiles = new BufferedImage[numberOfTilesPerSet];
+		BufferedImage fullImage;
 		
 		try {
-			String filepath = "resources/tilesets/TILESET" + tilesetID + ".png";
-			BufferedImage fullImage = ImageIO.read(new File(filepath));
-			
+			if(Variables.runningAsJar) {
+				String filepath = "tilesets/TILESET" + tilesetID + ".png";
+				InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(filepath);
+				fullImage = ImageIO.read(is);
+			}
+			else {
+				String filepath = "resources/tilesets/TILESET" + tilesetID + ".png";
+				fullImage = ImageIO.read(new File(filepath));
+			}
+
 			int numberOfRows = numberOfTilesPerSet / numberOfTilesPerRow;
 			int size = Constants.pixelsPerTile;
 

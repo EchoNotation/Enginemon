@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import entities.Entity;
 import entities.EntityTable;
@@ -33,11 +35,19 @@ public class MapLoader {
 	}
 	
 	public static void loadMap(int regionID, int mapID) {
-		String filename = "maps/MAP" + regionID + "-" + mapID + ".txt";
-		
 		try {
-			FileReader fr = new FileReader(filename);
-			BufferedReader br = new BufferedReader(fr);
+			BufferedReader br;
+			
+			if(Variables.runningAsJar) {
+				String filename = "maps/MAP" + regionID + "-" + mapID + ".txt";
+				InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
+				br = new BufferedReader(new InputStreamReader(is));
+			}
+			else {
+				String filename = "resources/maps/MAP" + regionID + "-" + mapID + ".txt";
+				FileReader fr = new FileReader(filename);
+				br = new BufferedReader(fr);
+			}		
 			
 			int mapWidth = Integer.parseInt(br.readLine());
 			int mapHeight = Integer.parseInt(br.readLine());
@@ -120,7 +130,6 @@ public class MapLoader {
 			}
 			
 			br.close();
-			fr.close();
 		} 
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
