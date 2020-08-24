@@ -137,6 +137,7 @@ public class Window {
 		
 		img.getGraphics().setColor(Color.WHITE);
 		img.getGraphics().fillRect(widthOffset, heightOffset, 12, 12);
+		img.getGraphics().drawString("" + Variables.numberOfConnectedControllers, 20, 20);
 		
 		return img;
 	}

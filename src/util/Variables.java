@@ -4,8 +4,11 @@ import main.Game.MoveDirection;
 
 public class Variables {
 	
-	//ClassLoader
+	//Make sure to change this whenever building as a runnable JAR
 	public static boolean runningAsJar = false;
+	
+	//Debug
+	public static int numberOfConnectedControllers = 0;
 	
 	//Location:
 	public static int currentRegionID;

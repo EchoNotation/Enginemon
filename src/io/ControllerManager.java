@@ -3,9 +3,12 @@ package io;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
+import net.java.games.input.ControllerEvent;
+import net.java.games.input.ControllerListener;
 import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
 import util.ControlMap;
+import util.Variables;
 
 public class ControllerManager {
 	public enum Actions {
@@ -57,6 +60,8 @@ public class ControllerManager {
 		cancelS = true;
 		menuS = true;
 		functionS = true;
+		
+		Variables.numberOfConnectedControllers = controllers.length;
 		
 		for(int i = 0; i < ControlMap.buttons.length; i++) {
 			ControlMap.buttons[i] = Actions.UNASSIGNED;
