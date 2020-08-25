@@ -109,6 +109,12 @@ public class Window {
 		g.dispose();
 	}
 	
+	/**
+	 * Draws the background tiles on a blank image.
+	 * @param img A blank image of the correct size.
+	 * @param tilesToDraw The 2D array of tiles that are potentially visible.
+	 * @return Image with tiles drawn on it.
+	 */
 	private BufferedImage renderBackground(BufferedImage img, int[][] tilesToDraw) {		
 		for(int i = 0; i < tilesToDraw.length; i++) {
 			for(int j = 0; j < tilesToDraw[i].length; j++) {
@@ -119,6 +125,12 @@ public class Window {
 		return img;
 	}
 	
+	/**
+	 * Draws all entities on screen to the specified image.
+	 * @param img The image to draw the entities on.
+	 * @param entitiesToDraw The entities to draw.
+	 * @return The image with the entities drawn on it.
+	 */
 	private BufferedImage renderEntities(BufferedImage img, Entity[] entitiesToDraw) {
 		int widthOffset = ((Constants.cameraTileWidth - 3) * 8) + 2;
 		int heightOffset = ((Constants.cameraTileHeight - 3) * 8) + 2;
@@ -131,13 +143,18 @@ public class Window {
 		return img;
 	}
 	
+	/**
+	 * Draws the player onto the current image.
+	 * @param img the image to draw the player on.
+	 * @return The image with the player on it.
+	 */
 	private BufferedImage renderPlayer(BufferedImage img) {
 		int widthOffset = ((Constants.cameraTileWidth - 3) * 8) + 2;
 		int heightOffset = ((Constants.cameraTileHeight - 3) * 8) + 2;
 		
 		img.getGraphics().setColor(Color.WHITE);
 		img.getGraphics().fillRect(widthOffset, heightOffset, 12, 12);
-		img.getGraphics().drawString("" + Variables.numberOfConnectedControllers, 20, 20);
+		//img.getGraphics().drawString("" + Variables.numberOfConnectedControllers, 20, 20);
 		
 		return img;
 	}

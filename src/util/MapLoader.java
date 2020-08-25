@@ -30,10 +30,18 @@ public class MapLoader {
 	public static int currentMusicID;
 	public static int currentEncounterTableID;
 	
+	/**
+	 * Will eventually load all maps in the resources/MAPS folder into the database.
+	 */
 	public static void loadAll() {
-		
+		//TODO Actual implementation
 	}
 	
+	/**
+	 * Loads all data from the specified map into the database.
+	 * @param regionID The region from which the map should be searched for.
+	 * @param mapID The id of the map within that particular region.
+	 */
 	public static void loadMap(int regionID, int mapID) {
 		try {
 			BufferedReader br;
@@ -139,6 +147,11 @@ public class MapLoader {
 		}
 	}
 	
+	/**
+	 * Swaps to the specified map, treating it as the current location.
+	 * @param regionID The id of the region to use.
+	 * @param mapID The id of the map that should be swapped to within that region.
+	 */
 	public static void swapToMap(int regionID, int mapID) {
 		currentTileData = tileData.get(regionID).get(mapID);
 		currentCollisionData = collisionData.get(regionID).get(mapID);

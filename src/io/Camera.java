@@ -38,14 +38,10 @@ public class Camera {
 		}
 	}
 	
-	public void changeCameraMode(CameraMode newMode) {
-		cMode = newMode;
-	}
-	
-	public CameraMode getCameraMode() {
-		return cMode;
-	}
-	
+	/**
+	 * Returns the array of all tiles that could potentially be within the camera's view.
+	 * @return The array of tiles.
+	 */
 	public int[][] getTilesInView() {
 		int[][] tiles = MapLoader.currentTileData;
 		int[][] tilesToDraw = new int[cameraTileHeight][cameraTileWidth];
@@ -75,6 +71,10 @@ public class Camera {
 		return tilesToDraw;
 	}
 	
+	/**
+	 * Retuns the array of all entities that could possibly be in the camera's view.
+	 * @return The entity array.
+	 */
 	public Entity[] getEntitiesInView() {
 		Entity[] entities = MapLoader.currentEntityData;
 		ArrayList<Entity> entitiesToDraw = new ArrayList<Entity>();		
@@ -96,22 +96,54 @@ public class Camera {
 		return entitiesToDraw.toArray(new Entity[entitiesToDraw.size()]);
 	}
 	
+	/**
+	 * Sets the camera's focus mode to the specified mode.
+	 * @param newMode The mode to switch to.
+	 */
+	public void changeCameraMode(CameraMode newMode) {
+		cMode = newMode;
+	}
+	
+	/**
+	 * @return The camera's current focusing mode.
+	 */
+	public CameraMode getCameraMode() {
+		return cMode;
+	}
+	
+	/**
+	 * @return The player.
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 	
+	/**
+	 * @return The x index of the tile that the camera is centered on.
+	 */
 	public int getFocusX() {
 		return focusX;
 	}
 	
+	/**
+	 * Sets the x index of the tile the camera is centered on to the specified value.
+	 * @param newFocusX The new x index.
+	 */
 	public void setFocusX(int newFocusX) {
 		focusX = newFocusX;
 	}
 	
+	/**
+	 * @return The y index of the tile that the camera is centered on.
+	 */
 	public int getFocusY() {
 		return focusY;
 	}
 	
+	/**
+	 * Sets the y index of the tile the camera is centered on to the specified value.
+	 * @param newFocusY The new y index.
+	 */
 	public void setFocusY(int newFocusY) {
 		focusY = newFocusY;
 	}

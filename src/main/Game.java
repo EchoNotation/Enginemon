@@ -35,6 +35,8 @@ public class Game {
 	private InputManager input;
 	private Player player;
 	private Camera camera;
+	
+	private int[][] collisionData;
 
 	public Game() {
 		keys = new KeyManager();
@@ -50,20 +52,22 @@ public class Game {
 		running = true;
 		gameState = GameState.WORLD;
 		
-		MapLoader.loadMap(1, 1);
-		MapLoader.swapToMap(1, 1);
+		MapLoader.loadMap(1, 2);
+		MapLoader.swapToMap(1, 2);
 		Tilesets.loadTilesets();
 		Tilesets.changeTileset(0);
 		player = new Player();
 		camera = new Camera(player);
 		camera.changeCameraMode(CameraMode.FOCUS_ON_PLAYER);
-		player.setXPos(0);
-		player.setYPos(0);
+		player.setXPos(1);
+		player.setYPos(3);
+		player.setTgtXPos(1);
+		player.setTgtYPos(3);
 		run();
 	}
 	
 	/**
-	 * Called after start, contains the main game loop and fps logic.
+	 * Called after start, contains the main game loop and logic for maintaining a reasonably constant framerate.
 	 */
 	private void run() {
 		int fps = 60;
@@ -118,6 +122,8 @@ public class Game {
 	private void tick() {
 		switch(gameState) {
 		case WORLD:
+			collisionData = MapLoader.currentCollisionData;
+			
 			if(!Variables.lockPlayerMovement) {
 				standardPlayerMovement();
 			}
@@ -136,7 +142,13 @@ public class Game {
 		input.tick();
 	}
 	
+	/**
+	 * Calling this function will update the movement of the player appropriately in most situations, except during events or other scripted sequences.
+	 */
 	public void standardPlayerMovement() {
+		boolean upPassable, downPassable, leftPassable, rightPassable;
+		int upCollision, downCollision, leftCollision, rightCollision;
+		
 		if(Variables.movingOverTile) {
 			if(Variables.movementOffset >= Constants.pixelsPerTile) {
 				player.setXPos(player.getTgtXPos());
@@ -146,24 +158,44 @@ public class Game {
 				Variables.moveDir = MoveDirection.NONE;
 				
 				if(input.upR) {
-					player.setTgtYPos(player.getYPos() - 1);
-					Variables.movingOverTile = true;
-					Variables.moveDir = MoveDirection.UP;
+					upCollision = getCollisionID(player.getXPos(), player.getYPos() - 1);
+					upPassable = parseCollision(upCollision, MoveDirection.UP);
+					
+					if(upPassable) {
+						player.setTgtYPos(player.getYPos() - 1);
+						Variables.movingOverTile = true;
+						Variables.moveDir = MoveDirection.UP;
+					}					
 				}
 				else if(input.downR) {
-					player.setTgtYPos(player.getYPos() + 1);
-					Variables.movingOverTile = true;
-					Variables.moveDir = MoveDirection.DOWN;
+					downCollision = getCollisionID(player.getXPos(), player.getYPos() + 1);
+					downPassable = parseCollision(downCollision, MoveDirection.DOWN);
+					
+					if(downPassable) {
+						player.setTgtYPos(player.getYPos() + 1);
+						Variables.movingOverTile = true;
+						Variables.moveDir = MoveDirection.DOWN;
+					}				
 				}
 				else if(input.leftR) {
-					player.setTgtXPos(player.getXPos() - 1);
-					Variables.movingOverTile = true;
-					Variables.moveDir = MoveDirection.LEFT;
+					leftCollision = getCollisionID(player.getXPos() - 1, player.getYPos());
+					leftPassable = parseCollision(leftCollision, MoveDirection.LEFT);
+					
+					if(leftPassable) {
+						player.setTgtXPos(player.getXPos() - 1);
+						Variables.movingOverTile = true;
+						Variables.moveDir = MoveDirection.LEFT;
+					}				
 				}
 				else if(input.rightR) {
-					player.setTgtXPos(player.getXPos() + 1);
-					Variables.movingOverTile = true;
-					Variables.moveDir = MoveDirection.RIGHT;
+					rightCollision = getCollisionID(player.getXPos() + 1, player.getYPos());	
+					rightPassable = parseCollision(rightCollision, MoveDirection.RIGHT);
+					
+					if(rightPassable) {
+						player.setTgtXPos(player.getXPos() + 1);
+						Variables.movingOverTile = true;
+						Variables.moveDir = MoveDirection.RIGHT;
+					}				
 				}
 				
 				if(Variables.movingOverTile) {
@@ -176,30 +208,100 @@ public class Game {
 		}
 		else {
 			if(input.upR) {
-				player.setTgtYPos(player.getYPos() - 1);
-				Variables.movingOverTile = true;
-				Variables.moveDir = MoveDirection.UP;
+				upCollision = getCollisionID(player.getXPos(), player.getYPos() - 1);
+				upPassable = parseCollision(upCollision, MoveDirection.UP);
+				
+				if(upPassable) {
+					player.setTgtYPos(player.getYPos() - 1);
+					Variables.movingOverTile = true;
+					Variables.moveDir = MoveDirection.UP;
+				}		
 			}
 			else if(input.downR) {
-				player.setTgtYPos(player.getYPos() + 1);
-				Variables.movingOverTile = true;
-				Variables.moveDir = MoveDirection.DOWN;
+				downCollision = getCollisionID(player.getXPos(), player.getYPos() + 1);
+				downPassable = parseCollision(downCollision, MoveDirection.DOWN);
+				
+				if(downPassable) {
+					player.setTgtYPos(player.getYPos() + 1);
+					Variables.movingOverTile = true;
+					Variables.moveDir = MoveDirection.DOWN;
+				}			
 			}
 			else if(input.leftR) {
-				player.setTgtXPos(player.getXPos() - 1);
-				Variables.movingOverTile = true;
-				Variables.moveDir = MoveDirection.LEFT;
+				leftCollision = getCollisionID(player.getXPos() - 1, player.getYPos());
+				leftPassable = parseCollision(leftCollision, MoveDirection.LEFT);
+				
+				if(leftPassable) {
+					player.setTgtXPos(player.getXPos() - 1);
+					Variables.movingOverTile = true;
+					Variables.moveDir = MoveDirection.LEFT;
+				}			
 			}
 			else if(input.rightR) {
-				player.setTgtXPos(player.getXPos() + 1);
-				Variables.movingOverTile = true;
-				Variables.moveDir = MoveDirection.RIGHT;
+				rightCollision = getCollisionID(player.getXPos() + 1, player.getYPos());	
+				rightPassable = parseCollision(rightCollision, MoveDirection.RIGHT);
+				
+				if(rightPassable) {
+					player.setTgtXPos(player.getXPos() + 1);
+					Variables.movingOverTile = true;
+					Variables.moveDir = MoveDirection.RIGHT;
+				}			
 			}
 			
 			if(Variables.movingOverTile) {
 				Variables.tileCrossSpeed = input.cancelR ? Constants.pixelsPerFrameRunning : Constants.pixelsPerFrameWalking;
 			}
 		}		
+	}
+	
+	/**
+	 * Determines whether the given collisionID can be walked onto from a particular direction.
+	 * @param collisionID The ID to check.
+	 * @param dir The direction to walk onto that tile from.
+	 * @return Whether or not this direction is passable.
+	 */
+	private boolean parseCollision(int collisionID, MoveDirection dir) {
+		switch(collisionID) {
+		case 0:
+			//Always passable
+			return true;
+		case 1:
+			//Always impassable
+			return false;
+		case 2:
+			//TL Ledge
+			return dir == MoveDirection.UP || dir == MoveDirection.LEFT;
+		case 3:
+			//T Ledge
+			return dir == MoveDirection.UP || dir == MoveDirection.LEFT || dir == MoveDirection.RIGHT;
+		case 4:
+			//TR Ledge
+			return dir == MoveDirection.UP || dir == MoveDirection.RIGHT;
+		case 5:
+			//R Ledge
+			return dir == MoveDirection.UP || dir == MoveDirection.RIGHT || dir == MoveDirection.DOWN;
+		case 6:
+			//BR Ledge
+			return dir == MoveDirection.RIGHT || dir == MoveDirection.DOWN;
+		case 7:
+			//B Ledge
+			return dir == MoveDirection.LEFT || dir == MoveDirection.DOWN || dir == MoveDirection.RIGHT;
+		case 8:
+			//BL Ledge
+			return dir == MoveDirection.DOWN || dir == MoveDirection.RIGHT;
+		case 9:
+			//L Ledge
+			return dir == MoveDirection.UP || dir == MoveDirection.DOWN || dir == MoveDirection.LEFT;
+		default:
+			System.out.println("Unrecognized collision ID! ID: " + collisionID);
+			return true;
+		}		
+	}
+	
+	private int getCollisionID(int xPos, int yPos) {
+		if(xPos < 0 || xPos >= collisionData[0].length || yPos < 0 || yPos >= collisionData.length) return 0;
+		
+		return collisionData[yPos][xPos];
 	}
 	
 	/**
