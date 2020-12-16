@@ -59,6 +59,7 @@ public class Window {
 	 * @param gameState the current state of the game.
 	 */
 	private void render(GameState gameState, Camera camera) {
+		
 		if(canvas.getBufferStrategy() == null) {
 			canvas.createBufferStrategy(3);
 		}

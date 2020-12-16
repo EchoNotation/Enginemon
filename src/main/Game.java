@@ -1,6 +1,10 @@
 package main;
 
+import java.util.ArrayList;
+
 import entities.Player;
+import events.EventStream;
+import events.EventTable;
 import io.Camera;
 import io.ControllerManager;
 import io.InputManager;
@@ -37,6 +41,10 @@ public class Game {
 	private Camera camera;
 	
 	private int[][] collisionData;
+	private int[][] eventIndices;
+	private ArrayList<EventStream> eventData;
+	private ArrayList<Integer> foundIndices;
+	private int currentEventIndex = -1;
 
 	public Game() {
 		keys = new KeyManager();
@@ -63,6 +71,20 @@ public class Game {
 		player.setYPos(3);
 		player.setTgtXPos(1);
 		player.setTgtYPos(3);
+		
+		collisionData = MapLoader.currentCollisionData;
+		eventIndices = new int[collisionData.length][];
+		eventData = new ArrayList<EventStream>();
+		foundIndices = new ArrayList<Integer>();
+		eventData.add(EventTable.getEventStream(0));
+		foundIndices.add(0);
+		
+		for(int i = 0; i < collisionData.length; i++) {
+			eventIndices[i] = new int[collisionData[i].length];
+			for(int j = 0; j < eventIndices[i].length; j++) {			
+				eventIndices[i][j] = 0;
+			}
+		}
 		run();
 	}
 	
@@ -120,9 +142,23 @@ public class Game {
 	 * Called exactly once every frame, all game and render logic starts here.
 	 */
 	private void tick() {
+		//System.out.println("Tick!");
 		switch(gameState) {
 		case WORLD:
-			collisionData = MapLoader.currentCollisionData;
+			if(currentEventIndex == -1) {
+				
+			}
+			else if(eventData.get(currentEventIndex).hasStarted()) {
+				eventData.get(currentEventIndex).tick();
+				
+				if(eventData.get(currentEventIndex).hasFinished()) {
+					eventData.get(currentEventIndex).end();
+					currentEventIndex = -1;
+				}
+			}
+			else {
+				eventData.get(currentEventIndex).init();
+			}
 			
 			if(!Variables.lockPlayerMovement) {
 				standardPlayerMovement();
@@ -156,6 +192,8 @@ public class Game {
 				Variables.movementOffset = 0;
 				Variables.movingOverTile = false;
 				Variables.moveDir = MoveDirection.NONE;
+				
+				currentEventIndex = eventIndices[player.getYPos()][player.getXPos()];
 				
 				if(input.upR) {
 					upCollision = getCollisionID(player.getXPos(), player.getYPos() - 1);

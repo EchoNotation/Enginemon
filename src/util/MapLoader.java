@@ -96,7 +96,7 @@ public class MapLoader {
 				
 				
 				for(int i = 0; i < eventTokens.length; i++) {
-					events[i] = EventTable.getEvent(Integer.parseInt(eventTokens[i]));
+					events[i] = EventTable.getEventStream(Integer.parseInt(eventTokens[i]));
 				}
 			}
 			
