@@ -44,6 +44,7 @@ public class Event {
 		inputData = input;
 		hasStarted = true;
 		readyToFinish = false;
+		framesDelayed = 0;
 	}
 	
 	/**
@@ -58,6 +59,8 @@ public class Event {
 	 * @return The output value for this event.
 	 */
 	public int end() {
+		hasStarted = false;
+		readyToFinish = false;
 		return 0;
 	}
 	

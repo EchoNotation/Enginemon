@@ -38,10 +38,6 @@ public class EventStream {
 		outputs = new int[seqEvents.length];
 		this.x = x;
 		this.y = y;
-		
-		for(int i = 0; i < parallelEvents.length; i++) {
-			parallelEventsLeft.add(parallelEvents[i]);
-		}
 	}
 	
 	/**
@@ -52,8 +48,13 @@ public class EventStream {
 		seqIndex = 0;
 		readyToFinish = false;
 		hasStarted = true;
-		System.out.println("Event stream begin!");
 		sequentialEvents[0].init(-1);
+		
+		for(int i = 0; i < parallelEvents.length; i++) {
+			parallelEventsLeft.add(parallelEvents[i]);
+		}
+		
+		System.out.println("Event stream begin!");
 	}
 	
 	/**
@@ -74,7 +75,11 @@ public class EventStream {
 		if(parallelEventsLeft.size() > 0) {
 			for(int i = parallelEventsLeft.size()-1; i >= 0; i--) {
 				Event temp = parallelEventsLeft.get(i);
-				if(temp.indexToWaitFor() <= seqIndex && !temp.hasStarted() && temp.readyToStart()) {
+				if(temp.hasStarted()){
+					parallelEventsLeft.get(i).tick();
+				}
+				else if(temp.indexToWaitFor() <= seqIndex && !temp.hasStarted() && temp.readyToStart()) {
+					//System.out.println("Time to start parallel!");
 					//It is time for this parallel event to start!
 					if(temp.getInputIndex() == -1) {
 						parallelEventsLeft.get(i).init(-1);
@@ -83,10 +88,6 @@ public class EventStream {
 						parallelEventsLeft.get(i).init(outputs[temp.getInputIndex()]);
 					}
 				}
-				else if(temp.hasStarted()){
-					parallelEventsLeft.get(i).tick();
-				}
-				
 				if(parallelEventsLeft.get(i).isDone()) {
 					parallelEventsLeft.get(i).end();
 					parallelEventsLeft.remove(i);
@@ -102,6 +103,8 @@ public class EventStream {
 	 * Called when the EventStream finishes.
 	 */
 	public void end() {
+		hasStarted = false;
+		readyToFinish = false;
 		System.out.println("Event stream end!");
 	}
 	

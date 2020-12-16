@@ -20,7 +20,7 @@ public class EventTable {
 			seq[1] = new DelayEvent(60);
 			seq[2] = new PrintEvent("Sequential Event System (TM)");
 			Event[] par = new Event[1];
-			par[0] = new PrintEvent(0, 60, -1, "Parallel Event System (TM)");
+			par[0] = new PrintEvent(1, 60, -1, "Parallel Event System (TM)");
 			return new EventStream(0, 0, seq, par, -1, -1);
 		}
 		return new EventStream(-1, -1, new Event[0], new Event[0], -1, -1);

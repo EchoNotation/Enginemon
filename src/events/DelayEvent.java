@@ -6,7 +6,7 @@ package events;
  *
  */
 public class DelayEvent extends Event {
-	private int framesToDelay;
+	private int framesToDelay, framesDelayed;
 	
 	/**
 	 * Creates a new sequential DelayEvent.
@@ -19,11 +19,12 @@ public class DelayEvent extends Event {
 	
 	@Override
 	public void tick() {
-		if(framesToDelay <= 0) {
+		if(framesDelayed >= framesToDelay) {
+			framesDelayed = 0;
 			readyToFinish = true;
 		}
 		else {
-			framesToDelay--;
+			framesDelayed++;
 		}
 	}
 }

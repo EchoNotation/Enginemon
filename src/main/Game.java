@@ -154,10 +154,12 @@ public class Game {
 				if(eventData.get(currentEventIndex).hasFinished()) {
 					eventData.get(currentEventIndex).end();
 					currentEventIndex = -1;
+					Variables.lockPlayerMovement = false;
 				}
 			}
 			else {
 				eventData.get(currentEventIndex).init();
+				Variables.lockPlayerMovement = true;
 			}
 			
 			if(!Variables.lockPlayerMovement) {
