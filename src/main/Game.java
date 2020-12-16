@@ -82,7 +82,7 @@ public class Game {
 		for(int i = 0; i < collisionData.length; i++) {
 			eventIndices[i] = new int[collisionData[i].length];
 			for(int j = 0; j < eventIndices[i].length; j++) {			
-				eventIndices[i][j] = 0;
+				eventIndices[i][j] = -1;
 			}
 		}
 		run();
@@ -176,7 +176,7 @@ public class Game {
 		
 		player.tick();
 		camera.tick();
-		window.tick(gameState, camera);
+		window.tick(gameState, camera, player);
 		input.tick();
 	}
 	
@@ -195,7 +195,12 @@ public class Game {
 				Variables.movingOverTile = false;
 				Variables.moveDir = MoveDirection.NONE;
 				
-				currentEventIndex = eventIndices[player.getYPos()][player.getXPos()];
+				if(player.getXPos() < 0 || player.getXPos() >= eventIndices[0].length || player.getYPos() < 0 || player.getYPos() >= eventIndices.length) {
+					currentEventIndex = -1;
+				}
+				else {
+					currentEventIndex = eventIndices[player.getYPos()][player.getXPos()];
+				}
 				
 				if(input.upR) {
 					upCollision = getCollisionID(player.getXPos(), player.getYPos() - 1);
@@ -338,6 +343,12 @@ public class Game {
 		}		
 	}
 	
+	/**
+	 * Returns the collision data for the specified tile on the current map.
+	 * @param xPos The x position of that tile.
+	 * @param yPos The y position of that tile.
+	 * @return The collision data for that tile (0 if xPos and yPos are out of bounds).
+	 */
 	private int getCollisionID(int xPos, int yPos) {
 		if(xPos < 0 || xPos >= collisionData[0].length || yPos < 0 || yPos >= collisionData.length) return 0;
 		
