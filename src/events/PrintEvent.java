@@ -9,12 +9,23 @@ public class PrintEvent extends Event {
 	private String message;
 	
 	/**
-	 * Creates a new sequential or parallel PrintEvent.
-	 * @param id The global ID of this event.
+	 * Creates a new sequential PrintEvent.
 	 * @param message The string to be printed to the console.
 	 */
-	public PrintEvent(int id, String message) {
-		super(id, 0);
+	public PrintEvent(String message) {
+		super();
+		this.message = message;
+	}
+	
+	/**
+	 * Creates a new parallel PrintEvent.
+	 * @param idToWaitFor The index of the sequential events array that this event should be run at.
+	 * @param framesToDelay The number of frames to delay once that index is reached before starting.
+	 * @param inputIndex The index of the sequential events array that this event should take input from.
+	 * @param message The string to be printed to the console.
+	 */
+	public PrintEvent(int idToWaitFor, int framesToDelay, int inputIndex, String message) {
+		super(idToWaitFor, framesToDelay, inputIndex);
 		this.message = message;
 	}
 	

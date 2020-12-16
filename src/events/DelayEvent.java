@@ -1,10 +1,19 @@
 package events;
 
+/**
+ * The event type that complets after a specified number of frames pass.
+ * @author Thomas
+ *
+ */
 public class DelayEvent extends Event {
 	private int framesToDelay;
 	
-	public DelayEvent(int id, int framesToDelay) {
-		super(id, 0);
+	/**
+	 * Creates a new sequential DelayEvent.
+	 * @param framesToDelay The number of frames to delay before completing.
+	 */
+	public DelayEvent(int framesToDelay) {
+		super();
 		this.framesToDelay = framesToDelay;
 	}
 	

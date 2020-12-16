@@ -37,7 +37,7 @@ public class MapLoader {
 		//TODO Actual implementation
 	}
 	
-	/**
+	/**	
 	 * Loads all data from the specified map into the database.
 	 * @param regionID The region from which the map should be searched for.
 	 * @param mapID The id of the map within that particular region.
@@ -69,6 +69,7 @@ public class MapLoader {
 			int musicID = Integer.parseInt(br.readLine());
 			int encounterTableID = Integer.parseInt(br.readLine());
 			
+			//Load all of the tilemap data for the current map.
 			int[][] tiles = new int[mapHeight][mapWidth];
 			int[][] collisions = new int[mapHeight][mapWidth];
 			
@@ -80,6 +81,7 @@ public class MapLoader {
 				}
 			}
 			
+			//Load all of the collision data for the current map.
 			for(int i = 0; i < mapHeight; i++) { 		
 				String[] tokens = br.readLine().trim().split("\\s+");
 				
@@ -88,6 +90,7 @@ public class MapLoader {
 				}
 			}
 			
+			//Load all of the events listed according to global ID. Events will eventually be stored in a completely different file.
 			int numberOfEvents = Integer.parseInt(br.readLine());
 			EventStream[] events = new EventStream[numberOfEvents];
 			
@@ -100,6 +103,7 @@ public class MapLoader {
 				}
 			}
 			
+			//Load all of the entities on this map according to global ID.
 			int numberOfEntities = Integer.parseInt(br.readLine());
 			Entity[] entities = new Entity[numberOfEntities];
 			

@@ -6,44 +6,34 @@ package events;
  *
  */
 public class Event {
-	protected int globalID = -1;
 	protected boolean readyToFinish = false;
 	protected int inputData;
 	protected boolean isParallel;
 	protected boolean hasStarted;
 	protected int idToWaitFor = -1;
+	protected int frameDelay = 0;
+	protected int framesDelayed = 0;
 	protected int inputIndex = 0;
 	
 	/**
 	 * Creates a new sequential Event, should only be used as super() in other Event classes.
-	 * @param id the global ID of this event.
-	 * @param inputIndex the index of the sequential events that should form the input for this event.
+	 * @param inputIndex The index of the sequential events that should form the input for this event.
 	 */
-	public Event(int id, int inputIndex) {
-		this.globalID = id;
+	public Event() {
 		isParallel = false;
-		this.inputIndex = inputIndex;
 	}
 	
 	/**
 	 * Creates a new parallel Event, should only be used as super() in other Event classes.
-	 * @param id
-	 * @param idToWaitFor
-	 * @param inputIndex
+	 * @param idToWaitFor The index of the sequential events list that this event should start at.
+	 * @param frameDelay The number of frames to delay after the correct index is reached.
+	 * @param inputIndex The index of the sequential events that should form the input for this event.
 	 */
-	public Event(int id, int idToWaitFor, int inputIndex) {
-		this.globalID = id;
+	public Event(int idToWaitFor, int frameDelay, int inputIndex) {
 		isParallel = true;
 		this.idToWaitFor = idToWaitFor;
+		this.frameDelay = frameDelay;
 		this.inputIndex = inputIndex;
-	}
-	
-	/**
-	 * Returns the global ID of this event.
-	 * @return The global ID.
-	 */
-	public int getID() {
-		return globalID;
 	}
 	
 	/**
@@ -53,6 +43,7 @@ public class Event {
 	public void init(int input) {
 		inputData = input;
 		hasStarted = true;
+		readyToFinish = false;
 	}
 	
 	/**
@@ -95,11 +86,19 @@ public class Event {
 	}
 	
 	/**
-	 * Returns what ID in the sequential list this event should be run at (assuming this is a parallel event).
-	 * @return The ID number.
+	 * Returns what index in the sequential list this event should be run at (assuming this is a parallel event).
+	 * @return The index number.
 	 */
-	public int idToWaitFor() {
+	public int indexToWaitFor() {
 		return idToWaitFor;
+	}
+	
+	/**
+	 * Returns the number of frames to delay before starting once appropriate index is reached (assumes parallel event).
+	 * @return The number of frames to delay.
+	 */
+	public int getFramesToDelay() {
+		return frameDelay;
 	}
 	
 	/**
@@ -108,5 +107,21 @@ public class Event {
 	 */
 	public int getInputIndex() {
 		return inputIndex;
+	}
+	
+	/**
+	 * Returns whether or not this event is ready to start (assumes parallel event).
+	 * @return Whether or not this event is ready to start.
+	 */
+	public boolean readyToStart() {
+		if(framesDelayed > frameDelay) {
+			framesDelayed = 0;
+			return true;
+		}
+		else {
+			//System.out.println("Not ready to start yet! Elapsed: " + framesDelayed + " out of: " + frameDelay);
+			framesDelayed++;
+			return false;
+		}
 	}
 }
