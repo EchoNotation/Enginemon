@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 import io.ControllerManager.Actions;
 
-public class ControlMap {
+public class Options {
 
 	//Key & Controller Bindings
 	public static int upKey = KeyEvent.VK_UP;

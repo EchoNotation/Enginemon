@@ -5,7 +5,7 @@ import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
-import util.ControlMap;
+import util.Options;
 import util.Variables;
 
 public class ControllerManager {
@@ -61,8 +61,8 @@ public class ControllerManager {
 		
 		Variables.numberOfConnectedControllers = controllers.length;
 		
-		for(int i = 0; i < ControlMap.buttons.length; i++) {
-			ControlMap.buttons[i] = Actions.UNASSIGNED;
+		for(int i = 0; i < Options.buttons.length; i++) {
+			Options.buttons[i] = Actions.UNASSIGNED;
 		}
 		
 		loadControllerSettings();
@@ -119,202 +119,202 @@ public class ControllerManager {
 		        if(comp.getIdentifier().toString().compareTo("x") == 0) {
 		        	//x axis
 		        	if(value > 0.75) {
-		        		action = ControlMap.xAxisPos;
+		        		action = Options.xAxisPos;
 		        		pressed = true;
 		        	}
 		        	else if(value < -0.75) {
-		        		action = ControlMap.xAxisNeg;
+		        		action = Options.xAxisNeg;
 		        		pressed = true;
 		        	}
 		        	else {
-		        		manageControls(ControlMap.xAxisPos, false);
+		        		manageControls(Options.xAxisPos, false);
 		        		
-		        		action = ControlMap.xAxisNeg;
+		        		action = Options.xAxisNeg;
 		        		pressed = false;
 		        	}
 		        }
 		        else if(comp.getIdentifier().toString().compareTo("y") == 0) {
 		        	//y axis
 		        	if(value > 0.75) {
-		        		action = ControlMap.yAxisPos;
+		        		action = Options.yAxisPos;
 		        		pressed = true;
 		        	}
 		        	else if(value < -0.75) {
-		        		action = ControlMap.yAxisNeg;
+		        		action = Options.yAxisNeg;
 		        		pressed = true;
 		        	}
 		        	else {
-		        		manageControls(ControlMap.yAxisPos, false);
+		        		manageControls(Options.yAxisPos, false);
 		        		
-		        		action = ControlMap.yAxisNeg;
+		        		action = Options.yAxisNeg;
 		        		pressed = false;
 		        	}
 		        }
 		        else if(comp.getIdentifier().toString().compareTo("rx") == 0) {
 		        	//x2 axis
 		        	if(value > 0.75) {
-		        		action = ControlMap.x2AxisPos;
+		        		action = Options.x2AxisPos;
 		        		pressed = true;
 		        	}
 		        	else if(value < -0.75) {
-		        		action = ControlMap.x2AxisNeg;
+		        		action = Options.x2AxisNeg;
 		        		pressed = true;
 		        	}
 		        	else {
-		        		manageControls(ControlMap.x2AxisPos, false);
+		        		manageControls(Options.x2AxisPos, false);
 		        		
-		        		action = ControlMap.x2AxisNeg;
+		        		action = Options.x2AxisNeg;
 		        		pressed = false;
 		        	}
 		        }
 		        else if(comp.getIdentifier().toString().compareTo("ry") == 0) {
 		        	//y2 axis
 		        	if(value > 0.75) {
-		        		action = ControlMap.y2AxisPos;
+		        		action = Options.y2AxisPos;
 		        		pressed = true;
 		        	}
 		        	else if(value < -0.75) {
-		        		action = ControlMap.y2AxisNeg;
+		        		action = Options.y2AxisNeg;
 		        		pressed = true;
 		        	}
 		        	else {
-		        		manageControls(ControlMap.y2AxisPos, false);
+		        		manageControls(Options.y2AxisPos, false);
 		        		
-		        		action = ControlMap.y2AxisNeg;
+		        		action = Options.y2AxisNeg;
 		        		pressed = false;
 		        	}
 		        }
 		        else if(comp.getIdentifier().toString().compareTo("z") == 0) {
 		        	//z axis
 		        	if(value > 0.75) {
-		        		action = ControlMap.zAxisPos;
+		        		action = Options.zAxisPos;
 		        		pressed = true;
 		        	}
 		        	else if(value < -0.75) {
-		        		action = ControlMap.zAxisNeg;
+		        		action = Options.zAxisNeg;
 		        		pressed = true;
 		        	}
 		        	else {
-		        		manageControls(ControlMap.zAxisPos, false);
+		        		manageControls(Options.zAxisPos, false);
 		        		
-		        		action = ControlMap.zAxisNeg;
+		        		action = Options.zAxisNeg;
 		        		pressed = false;
 		        	}
 		        }
 		        else if(comp.getIdentifier().toString().compareTo("pov") == 0) {
 		        	//hat switch
 		        	if(value == Component.POV.CENTER) {
-		        		manageControls(ControlMap.povTL, false);
-		        		manageControls(ControlMap.povTM, false);
-		        		manageControls(ControlMap.povTR, false);
-		        		manageControls(ControlMap.povR, false);
-		        		manageControls(ControlMap.povBR, false);
-		        		manageControls(ControlMap.povBM, false);
-		        		manageControls(ControlMap.povBL, false);
+		        		manageControls(Options.povTL, false);
+		        		manageControls(Options.povTM, false);
+		        		manageControls(Options.povTR, false);
+		        		manageControls(Options.povR, false);
+		        		manageControls(Options.povBR, false);
+		        		manageControls(Options.povBM, false);
+		        		manageControls(Options.povBL, false);
 		        		
-		        		action = ControlMap.povL;
+		        		action = Options.povL;
 		        		pressed = false;
 		        	}
 		        	else if(value == Component.POV.UP_LEFT) {
-		        		manageControls(ControlMap.povL, false);
-		        		manageControls(ControlMap.povTM, false);
-		        		manageControls(ControlMap.povTR, false);
-		        		manageControls(ControlMap.povR, false);
-		        		manageControls(ControlMap.povBR, false);
-		        		manageControls(ControlMap.povBM, false);
-		        		manageControls(ControlMap.povBL, false);
+		        		manageControls(Options.povL, false);
+		        		manageControls(Options.povTM, false);
+		        		manageControls(Options.povTR, false);
+		        		manageControls(Options.povR, false);
+		        		manageControls(Options.povBR, false);
+		        		manageControls(Options.povBM, false);
+		        		manageControls(Options.povBL, false);
 		        		
-		        		action = ControlMap.povTL;
+		        		action = Options.povTL;
 		        		pressed = true;
 		        	}
 		        	else if(value == Component.POV.UP) {
-		        		manageControls(ControlMap.povL, false);
-		        		manageControls(ControlMap.povTL, false);
-		        		manageControls(ControlMap.povTR, false);
-		        		manageControls(ControlMap.povR, false);
-		        		manageControls(ControlMap.povBR, false);
-		        		manageControls(ControlMap.povBM, false);
-		        		manageControls(ControlMap.povBL, false);
+		        		manageControls(Options.povL, false);
+		        		manageControls(Options.povTL, false);
+		        		manageControls(Options.povTR, false);
+		        		manageControls(Options.povR, false);
+		        		manageControls(Options.povBR, false);
+		        		manageControls(Options.povBM, false);
+		        		manageControls(Options.povBL, false);
 		        		
-		        		action = ControlMap.povTM;
+		        		action = Options.povTM;
 		        		pressed = true;
 		        	}
 		        	else if(value == Component.POV.UP_RIGHT) {
-		        		manageControls(ControlMap.povL, false);
-		        		manageControls(ControlMap.povTM, false);
-		        		manageControls(ControlMap.povTL, false);
-		        		manageControls(ControlMap.povR, false);
-		        		manageControls(ControlMap.povBR, false);
-		        		manageControls(ControlMap.povBM, false);
-		        		manageControls(ControlMap.povBL, false);
+		        		manageControls(Options.povL, false);
+		        		manageControls(Options.povTM, false);
+		        		manageControls(Options.povTL, false);
+		        		manageControls(Options.povR, false);
+		        		manageControls(Options.povBR, false);
+		        		manageControls(Options.povBM, false);
+		        		manageControls(Options.povBL, false);
 		        		
-		        		action = ControlMap.povTR;
+		        		action = Options.povTR;
 		        		pressed = true;
 		        	}
 		        	else if(value == Component.POV.RIGHT) {
-		        		manageControls(ControlMap.povL, false);
-		        		manageControls(ControlMap.povTM, false);
-		        		manageControls(ControlMap.povTR, false);
-		        		manageControls(ControlMap.povTL, false);
-		        		manageControls(ControlMap.povBR, false);
-		        		manageControls(ControlMap.povBM, false);
-		        		manageControls(ControlMap.povBL, false);
+		        		manageControls(Options.povL, false);
+		        		manageControls(Options.povTM, false);
+		        		manageControls(Options.povTR, false);
+		        		manageControls(Options.povTL, false);
+		        		manageControls(Options.povBR, false);
+		        		manageControls(Options.povBM, false);
+		        		manageControls(Options.povBL, false);
 		        		
-		        		action = ControlMap.povR;
+		        		action = Options.povR;
 		        		pressed = true;
 		        	}
 		        	else if(value == Component.POV.DOWN_RIGHT) {
-		        		manageControls(ControlMap.povL, false);
-		        		manageControls(ControlMap.povTM, false);
-		        		manageControls(ControlMap.povTR, false);
-		        		manageControls(ControlMap.povR, false);
-		        		manageControls(ControlMap.povTL, false);
-		        		manageControls(ControlMap.povBM, false);
-		        		manageControls(ControlMap.povBL, false);
+		        		manageControls(Options.povL, false);
+		        		manageControls(Options.povTM, false);
+		        		manageControls(Options.povTR, false);
+		        		manageControls(Options.povR, false);
+		        		manageControls(Options.povTL, false);
+		        		manageControls(Options.povBM, false);
+		        		manageControls(Options.povBL, false);
 		        		
-		        		action = ControlMap.povBR;
+		        		action = Options.povBR;
 		        		pressed = true;
 		        	}
 		        	else if(value == Component.POV.DOWN) {
-		        		manageControls(ControlMap.povL, false);
-		        		manageControls(ControlMap.povTM, false);
-		        		manageControls(ControlMap.povTR, false);
-		        		manageControls(ControlMap.povR, false);
-		        		manageControls(ControlMap.povBR, false);
-		        		manageControls(ControlMap.povTL, false);
-		        		manageControls(ControlMap.povBL, false);
+		        		manageControls(Options.povL, false);
+		        		manageControls(Options.povTM, false);
+		        		manageControls(Options.povTR, false);
+		        		manageControls(Options.povR, false);
+		        		manageControls(Options.povBR, false);
+		        		manageControls(Options.povTL, false);
+		        		manageControls(Options.povBL, false);
 		        		
-		        		action = ControlMap.povBM;
+		        		action = Options.povBM;
 		        		pressed = true;
 		        	}
 		        	else if(value == Component.POV.DOWN_LEFT) {
-		        		manageControls(ControlMap.povL, false);
-		        		manageControls(ControlMap.povTM, false);
-		        		manageControls(ControlMap.povTR, false);
-		        		manageControls(ControlMap.povR, false);
-		        		manageControls(ControlMap.povBR, false);
-		        		manageControls(ControlMap.povBM, false);
-		        		manageControls(ControlMap.povTL, false);
+		        		manageControls(Options.povL, false);
+		        		manageControls(Options.povTM, false);
+		        		manageControls(Options.povTR, false);
+		        		manageControls(Options.povR, false);
+		        		manageControls(Options.povBR, false);
+		        		manageControls(Options.povBM, false);
+		        		manageControls(Options.povTL, false);
 		        		
-		        		action = ControlMap.povBL;
+		        		action = Options.povBL;
 		        		pressed = true;
 		        	}
 		        	else if(value == Component.POV.LEFT) {
-		        		manageControls(ControlMap.povTL, false);
-		        		manageControls(ControlMap.povTM, false);
-		        		manageControls(ControlMap.povTR, false);
-		        		manageControls(ControlMap.povR, false);
-		        		manageControls(ControlMap.povBR, false);
-		        		manageControls(ControlMap.povBM, false);
-		        		manageControls(ControlMap.povBL, false);
+		        		manageControls(Options.povTL, false);
+		        		manageControls(Options.povTM, false);
+		        		manageControls(Options.povTR, false);
+		        		manageControls(Options.povR, false);
+		        		manageControls(Options.povBR, false);
+		        		manageControls(Options.povBM, false);
+		        		manageControls(Options.povBL, false);
 		        		
-		        		action = ControlMap.povL;
+		        		action = Options.povL;
 		        		pressed = true;
 		        	}
 		        }
 		        else {
 		        	//Some button
-		        	action = ControlMap.buttons[Integer.parseInt(comp.getIdentifier().toString())];
+		        	action = Options.buttons[Integer.parseInt(comp.getIdentifier().toString())];
 		        	pressed = value == 1.0 ? true : false;
 		        }
 		        
@@ -422,74 +422,74 @@ public class ControllerManager {
 	}
 	
 	public void loadControllerSettings() {
-		ControlMap.povTM = Actions.UP;
-		ControlMap.povL = Actions.LEFT;
-		ControlMap.povR = Actions.RIGHT;
-		ControlMap.povBM = Actions.DOWN;
-		ControlMap.buttons[0] = Actions.CANCEL;
-		ControlMap.buttons[1] = Actions.CONFIRM;
-		ControlMap.buttons[2] = Actions.FUNCTION;
-		ControlMap.buttons[3] = Actions.MENU;
+		Options.povTM = Actions.UP;
+		Options.povL = Actions.LEFT;
+		Options.povR = Actions.RIGHT;
+		Options.povBM = Actions.DOWN;
+		Options.buttons[0] = Actions.CANCEL;
+		Options.buttons[1] = Actions.CONFIRM;
+		Options.buttons[2] = Actions.FUNCTION;
+		Options.buttons[3] = Actions.MENU;
 	}
 	
 	public void rebindControl(Actions action, Controls control, int buttonID) {
 		switch(control) {
 		case BUTTON:
-			ControlMap.buttons[buttonID] = action;
+			Options.buttons[buttonID] = action;
 			break;
 		case POV_BL:
-			ControlMap.povBL = action;
+			Options.povBL = action;
 			break;
 		case POV_BM:
-			ControlMap.povBM = action;
+			Options.povBM = action;
 			break;
 		case POV_BR:
-			ControlMap.povBR = action;
+			Options.povBR = action;
 			break;
 		case POV_L:
-			ControlMap.povL = action;
+			Options.povL = action;
 			break;
 		case POV_R:
-			ControlMap.povR = action;
+			Options.povR = action;
 			break;
 		case POV_TL:
-			ControlMap.povTL = action;
+			Options.povTL = action;
 			break;
 		case POV_TM:
-			ControlMap.povTM = action;
+			Options.povTM = action;
 			break;
 		case POV_TR:
-			ControlMap.povTR = action;
+			Options.povTR = action;
 			break;
 		case X2_AXIS_NEG:
-			ControlMap.x2AxisNeg = action;
+			Options.x2AxisNeg = action;
 			break;
 		case X2_AXIS_POS:
-			ControlMap.x2AxisPos = action;
+			Options.x2AxisPos = action;
 			break;
 		case X_AXIS_NEG:
-			ControlMap.xAxisNeg = action;
+			Options.xAxisNeg = action;
 			break;
 		case X_AXIS_POS:
-			ControlMap.xAxisPos = action;
+			Options.xAxisPos = action;
 			break;
 		case Y2_AXIS_NEG:
-			ControlMap.y2AxisNeg = action;
+			Options.y2AxisNeg = action;
 			break;
 		case Y2_AXIS_POS:
-			ControlMap.y2AxisPos = action;
+			Options.y2AxisPos = action;
 			break;
 		case Y_AXIS_NEG:
-			ControlMap.yAxisNeg = action;
+			Options.yAxisNeg = action;
 			break;
 		case Y_AXIS_POS:
-			ControlMap.yAxisPos = action;
+			Options.yAxisPos = action;
 			break;
 		case Z_AXIS_NEG:
-			ControlMap.zAxisNeg = action;
+			Options.zAxisNeg = action;
 			break;
 		case Z_AXIS_POS:
-			ControlMap.zAxisPos = action;
+			Options.zAxisPos = action;
 			break;
 		default:
 			break;

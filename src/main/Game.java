@@ -145,6 +145,15 @@ public class Game {
 		//System.out.println("Tick!");
 		switch(gameState) {
 		case WORLD:
+			if(input.function) {
+				if(camera.getCameraMode() == CameraMode.FOCUS_ON_PLAYER) {
+					camera.changeCameraMode(CameraMode.FREE);
+				}
+				else {
+					camera.changeCameraMode(CameraMode.FOCUS_ON_PLAYER);
+				}
+			}
+			
 			if(currentEventIndex == -1) {
 				
 			}

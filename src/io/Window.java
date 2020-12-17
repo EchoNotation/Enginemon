@@ -28,6 +28,7 @@ public class Window {
 
 	private BufferedImage[] currentTileset;
 	private Camera.CameraMode cMode;
+	private int cameraX, cameraY;
 	
 	public Window(String title, int width, int height, KeyManager keys) {
 		this.title = title;
@@ -55,6 +56,8 @@ public class Window {
 	public void tick(GameState gameState, Camera camera, Player player) {
 		currentTileset = Tilesets.getCurrentTiles();
 		cMode = camera.getCameraMode();
+		cameraX = camera.getFocusX();
+		cameraY = camera.getFocusY();
 		render(gameState, camera, player);
 	}
 	
@@ -188,7 +191,7 @@ public class Window {
 				break;
 			}
 			
-			img.getGraphics().fillRect((player.getXPos() * Constants.pixelsPerTile) + widthOffset, (player.getYPos() * Constants.pixelsPerTile) + heightOffset, 12, 12);
+			img.getGraphics().fillRect(((player.getXPos() - cameraX) * Constants.pixelsPerTile) + widthOffset, ((player.getYPos() - cameraY) * Constants.pixelsPerTile) + heightOffset, 12, 12);
 		}
 		//img.getGraphics().drawString("" + Variables.numberOfConnectedControllers, 20, 20);
 		

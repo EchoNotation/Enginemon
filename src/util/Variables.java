@@ -21,4 +21,8 @@ public class Variables {
 	public static int tileCrossSpeed = 0;
 	public static MoveDirection moveDir = MoveDirection.NONE;
 	
+	//Text Displaying:
+	public static boolean displayingText = false;
+	public static boolean readyForNextTextBox = false;
+	public static String currentMessage = "Message was not set!";
 }
