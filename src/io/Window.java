@@ -3,7 +3,9 @@ package io;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
@@ -35,7 +37,7 @@ public class Window {
 	private String currentlyDisplayedPortion = "";
 	private int charFrameCounter = 1;
 	private int textOptionsCursorPos = 0;
-	private int textBoxHeight = 20;
+	private int textboxHeight = 120;
 	
 	public Window(String title, int width, int height, KeyManager keys) {
 		this.title = title;
@@ -80,17 +82,38 @@ public class Window {
 		}
 		
 		BufferStrategy bs = canvas.getBufferStrategy();
-		Graphics g = bs.getDrawGraphics();
+		Graphics gOverall = bs.getDrawGraphics();
+		Graphics2D g;
 		
-		g.clearRect(0, 0, width, height);
+		gOverall.clearRect(0, 0, width, height);
 		BufferedImage img = new BufferedImage(pixelsPerTile * tilesPerRow, pixelsPerTile * tilesPerColumn, currentTileset[0].getType());
+		g = img.createGraphics();
 		
-		//System.out.println("img height: " + img.getHeight());
-		BufferedImage finalImg;
-		
+		//System.out.println("img height: " + img.getHeight());		
 		if(gameState == GameState.WORLD) {
-			BufferedImage prePlayerImg = renderEntities(renderBackground(img, camera.getTilesInView()), camera.getEntitiesInView());
+			//Render background tiles to the screen.
+			int[][] tilesToDraw = camera.getTilesInView();			
+			for(int i = 0; i < tilesToDraw.length; i++) {
+				for(int j = 0; j < tilesToDraw[i].length; j++) {
+					g.drawImage(currentTileset[tilesToDraw[i][j]], j * Constants.pixelsPerTile, i * Constants.pixelsPerTile, null);
+				}
+			}
 			
+			
+			
+			//Render entities to the screen.
+			Entity[] entitiesToDraw = camera.getEntitiesInView();
+			int widthOffset = ((Constants.cameraTileWidth - 3) * 8) + 2;
+			int heightOffset = ((Constants.cameraTileHeight - 3) * 8) + 2;
+			g.setColor(Color.GRAY);
+			for(int i = 0; i < entitiesToDraw.length; i++) {								
+				g.fillRect((entitiesToDraw[i].getXPos() * Constants.pixelsPerTile) + widthOffset, (entitiesToDraw[i].getYPos() * Constants.pixelsPerTile) + heightOffset, 12, 12);
+			}
+			
+			
+			BufferedImage postShiftingImg = new BufferedImage(img.getWidth(), img.getHeight(), img.getType());
+			
+			//Render the player to the screen.
 			if(cMode == CameraMode.FOCUS_ON_PLAYER) {
 				int xOffset = 0;
 				int yOffset = 0;
@@ -114,138 +137,91 @@ public class Window {
 					System.out.println("Invalid moveDir when calculating x and y offsets! Direction: " + Variables.moveDir);
 					break;
 				}
-				
-				//System.out.println("pixelsPerTile + yOffset: " + (pixelsPerTile + yOffset) + " Height: " + pixelsPerTile * (tilesPerRow - 2));
-				//System.out.println("prePlayerImg height: " + prePlayerImg.getHeight());
-				BufferedImage shiftedImg = prePlayerImg.getSubimage(pixelsPerTile + xOffset, pixelsPerTile + yOffset, pixelsPerTile * (tilesPerRow - 2), pixelsPerTile * (tilesPerColumn - 2));
-				finalImg = renderTextbox(renderPlayer(shiftedImg, player));
+				postShiftingImg = img.getSubimage(pixelsPerTile + xOffset, pixelsPerTile + yOffset, pixelsPerTile * (tilesPerRow - 2), pixelsPerTile * (tilesPerColumn - 2));
+				g = postShiftingImg.createGraphics();
+				g.setColor(Color.WHITE);
+				g.fillRect(widthOffset, heightOffset, 12, 12);
 			}
-			else {
-				finalImg = renderTextbox(renderPlayer(prePlayerImg.getSubimage(pixelsPerTile, pixelsPerTile, pixelsPerTile * (tilesPerRow - 2), pixelsPerTile * (tilesPerColumn - 2)), player));
+			else if(cMode == CameraMode.FREE) {
+				switch(Variables.moveDir) {
+				case UP:
+					heightOffset -= Variables.movementOffset;
+					break;
+				case DOWN:
+					heightOffset += Variables.movementOffset;
+					break;
+				case LEFT:
+					widthOffset -= Variables.movementOffset;
+					break;
+				case RIGHT:
+					widthOffset += Variables.movementOffset;
+					break;
+				case NONE:
+					break;
+				default:
+					System.out.println("Invalid moveDir when calculating x and y offsets! Direction: " + Variables.moveDir);
+					break;
+				}
+				postShiftingImg = img;
+				g = postShiftingImg.createGraphics();
+				g.setColor(Color.WHITE);
+				g.fillRect(((player.getXPos() - cameraX) * Constants.pixelsPerTile) + widthOffset, ((player.getYPos() - cameraY) * Constants.pixelsPerTile) + heightOffset, 12, 12);
+			}
+			//BufferedImage prePlayerImg = renderEntities(renderBackground(img, camera.getTilesInView()), camera.getEntitiesInView());
+			
+			
+			
+			BufferedImage finalImg = new BufferedImage(width, height, postShiftingImg.getType());
+			g = finalImg.createGraphics();
+			g.drawImage(postShiftingImg, 0, 0, width, height, null);
+			//Render any curently needed textboxes to the screen, and account for current textbox logic.
+			boolean needOptionsBox = false;
+			//System.out.println("render function running.");
+			if(Variables.displayingText) {
+				//System.out.println("Attempting to render text...");
+				if(Variables.messageCompleted) {
+					if(Variables.displayTextOptions) {
+						needOptionsBox = true;
+						
+						if(InputManager.confirm) {
+							Variables.chosenTextOption = textOptionsCursorPos;
+						}
+					}
+					else if(InputManager.confirmR || InputManager.cancelR) {
+						Variables.readyForNextTextBox = true;
+						textMessageIndex = 0;
+					}
+				}
+				else {
+					if(Options.framesPerChar <= charFrameCounter) {
+						charFrameCounter = 1;
+						textMessageIndex += 1;
+					}
+					else {
+						charFrameCounter++;
+					}
+				}
+				
+				g.setColor(Color.DARK_GRAY);
+				//g.fillRect(100, 0, 100, 100);
+				g.fillRect(0, height - textboxHeight, width, textboxHeight);
+				g.setColor(Color.LIGHT_GRAY);
+				g.drawRect(0, height - textboxHeight, width-1, textboxHeight-1);
+				if(textMessageIndex >= Variables.currentMessage.length()) {
+					textMessageIndex = Variables.currentMessage.length() - 1;
+					Variables.messageCompleted = true;
+				}
+				String textToDisplay = Variables.currentMessage.substring(0, textMessageIndex);
+				//System.out.println("TextToDisplay: " + textToDisplay);
+				g.setColor(Color.WHITE);
+				g.setFont(new Font("Arial", Font.PLAIN, 20));
+				g.drawString(textToDisplay, 100, 100);
 			}
 			
-			g.drawImage(finalImg, 0, 0, width, height, null);
+			gOverall.drawImage(finalImg, 0, 0, width, height, null);
 		}
 		
 		bs.show();
-		g.dispose();
-	}
-	
-	/**
-	 * Draws the background tiles on a blank image.
-	 * @param img A blank image of the correct size.
-	 * @param tilesToDraw The 2D array of tiles that are potentially visible.
-	 * @return Image with tiles drawn on it.
-	 */
-	private BufferedImage renderBackground(BufferedImage img, int[][] tilesToDraw) {		
-		for(int i = 0; i < tilesToDraw.length; i++) {
-			for(int j = 0; j < tilesToDraw[i].length; j++) {
-				img.getGraphics().drawImage(currentTileset[tilesToDraw[i][j]], j * Constants.pixelsPerTile, i * Constants.pixelsPerTile, null);
-			}
-		}
-		
-		return img;
-	}
-	
-	/**
-	 * Draws all entities on screen to the specified image.
-	 * @param img The image to draw the entities on.
-	 * @param entitiesToDraw The entities to draw.
-	 * @return The image with the entities drawn on it.
-	 */
-	private BufferedImage renderEntities(BufferedImage img, Entity[] entitiesToDraw) {
-		int widthOffset = ((Constants.cameraTileWidth - 3) * 8) + 2;
-		int heightOffset = ((Constants.cameraTileHeight - 3) * 8) + 2;
-				
-		for(int i = 0; i < entitiesToDraw.length; i++) {					
-			img.getGraphics().setColor(Color.GRAY);
-			img.getGraphics().fillRect((entitiesToDraw[i].getXPos() * Constants.pixelsPerTile) + widthOffset, (entitiesToDraw[i].getYPos() * Constants.pixelsPerTile) + heightOffset, 12, 12);
-		}
-		
-		return img;
-	}
-	
-	/**
-	 * Draws the player onto the current image.
-	 * @param img the image to draw the player on.
-	 * @return The image with the player on it.
-	 */
-	private BufferedImage renderPlayer(BufferedImage img, Player player) {
-		int widthOffset = ((Constants.cameraTileWidth - 3) * 8) + 2;
-		int heightOffset = ((Constants.cameraTileHeight - 3) * 8) + 2;
-		
-		img.getGraphics().setColor(Color.WHITE);
-		if(cMode == CameraMode.FOCUS_ON_PLAYER) {
-			img.getGraphics().fillRect(widthOffset, heightOffset, 12, 12);
-		}
-		else if(cMode == CameraMode.FREE) {
-			switch(Variables.moveDir) {
-			case UP:
-				heightOffset -= Variables.movementOffset;
-				break;
-			case DOWN:
-				heightOffset += Variables.movementOffset;
-				break;
-			case LEFT:
-				widthOffset -= Variables.movementOffset;
-				break;
-			case RIGHT:
-				widthOffset += Variables.movementOffset;
-				break;
-			case NONE:
-				break;
-			default:
-				System.out.println("Invalid moveDir when calculating x and y offsets! Direction: " + Variables.moveDir);
-				break;
-			}
-			img.getGraphics().fillRect(((player.getXPos() - cameraX) * Constants.pixelsPerTile) + widthOffset, ((player.getYPos() - cameraY) * Constants.pixelsPerTile) + heightOffset, 12, 12);
-		}
-		//img.getGraphics().drawString("" + Variables.numberOfConnectedControllers, 20, 20);
-		
-		return img;
-	}
-	
-	private BufferedImage renderTextbox(BufferedImage img) {
-		boolean needOptionsBox = false;
-		//System.out.println("render function running.");
-		if(Variables.displayingText) {
-			//System.out.println("Attempting to render text...");
-			if(Variables.messageCompleted) {
-				if(Variables.displayTextOptions) {
-					needOptionsBox = true;
-					
-					if(InputManager.confirm) {
-						Variables.chosenTextOption = textOptionsCursorPos;
-					}
-				}
-				else if(InputManager.confirmR || InputManager.cancelR) {
-					Variables.readyForNextTextBox = true;
-					textMessageIndex = 0;
-				}
-			}
-			else {
-				if(Options.framesPerChar <= charFrameCounter) {
-					charFrameCounter = 1;
-					textMessageIndex += 1;
-				}
-				else {
-					charFrameCounter++;
-				}
-			}
-			
-			//img.getGraphics().setColor(Color.DARK_GRAY);
-			img.getGraphics().fillRect(100, 0, 100, 100);
-			//img.getGraphics().fillRect(0, height - textBoxHeight, width, textBoxHeight);
-			if(textMessageIndex >= Variables.currentMessage.length()) {
-				textMessageIndex = Variables.currentMessage.length() - 1;
-				Variables.messageCompleted = true;
-			}
-			String textToDisplay = Variables.currentMessage.substring(0, textMessageIndex);
-			//System.out.println("TextToDisplay: " + textToDisplay);
-			//img.getGraphics().setColor(Color.WHITE);
-			img.getGraphics().drawString(textToDisplay, 7, height - textBoxHeight + 7);
-		}
-		
-		return img;
+		gOverall.dispose();
 	}
 }
