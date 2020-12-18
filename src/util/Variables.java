@@ -7,7 +7,7 @@ public class Variables {
 	//Make sure to change this whenever building as a runnable JAR
 	public static boolean runningAsJar = false;
 	
-	//Debug
+	//Debug:
 	public static int numberOfConnectedControllers = 0;
 	
 	//Location:
@@ -24,5 +24,9 @@ public class Variables {
 	//Text Displaying:
 	public static boolean displayingText = false;
 	public static boolean readyForNextTextBox = false;
+	public static boolean messageCompleted = false;
+	public static boolean displayTextOptions = false;
 	public static String currentMessage = "Message was not set!";
+	public static String[] textOptions = new String[0];
+	public static int chosenTextOption = -1;
 }

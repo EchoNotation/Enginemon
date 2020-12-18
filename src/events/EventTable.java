@@ -23,6 +23,13 @@ public class EventTable {
 			par[0] = new PrintEvent(1, 60, -1, "Parallel Event System (TM)");
 			return new EventStream(0, 0, seq, par, -1, -1);
 		}
+		else if(eventID == 1) {
+			Event[] seq = new Event[1];
+			String[] textData = new String[1];
+			textData[0] = "This is a test of the text display system!";
+			seq[0] = new TextEvent(textData, new String[0]);
+			return new EventStream(1, 1, seq, new Event[0], -1, -1);
+		}
 		return new EventStream(-1, -1, new Event[0], new Event[0], -1, -1);
 	}
 	

@@ -1,11 +1,18 @@
 package events;
 
+import util.Variables;
+
 /**
  * The class for all events which create dialog/text boxes.
  * @author Thomas
  *
  */
 public class TextEvent extends Event {
+	private String[] textData, optionText;
+	private int textIndex;
+	private int lastIndex;
+	private int chosenOption;
+	private boolean waitAFrame;
 
 	/**
 	 * Creates a new sequential TextEvent.
@@ -14,6 +21,8 @@ public class TextEvent extends Event {
 	 */
 	public TextEvent(String[] textData, String[] optionText) {
 		super();
+		this.textData = textData;
+		this.optionText = optionText;
 	}
 	
 	/**
@@ -26,6 +35,71 @@ public class TextEvent extends Event {
 	 */
 	public TextEvent(int idToWaitFor, int framesToDelay, int inputIndex, String[] textData, String[] optionText) {
 		super(idToWaitFor, framesToDelay, inputIndex);
+		this.textData = textData;
+		this.optionText = optionText;
 	}
 	
+	/**
+	 * Runs once when time to start.
+	 * @param input The input value for this TextEvent.
+	 */
+	@Override
+	public void init(int input) {
+		//System.out.println("Begin text event! Starting message = " + textData[0]);
+		if(textData.length <= 0) {
+			readyToFinish = true;
+			return;
+		}
+		inputData = input;
+		hasStarted = true;
+		readyToFinish = false;
+		framesDelayed = 0;
+		Variables.displayingText = true;
+		Variables.currentMessage = textData[0];
+		textIndex = 1;
+		lastIndex = textData.length - 1;
+		chosenOption = -1;
+		waitAFrame = false;
+	}
+	
+	@Override
+	public void tick() {
+		//System.out.println("Tick TextEvent!");
+		if(!Variables.messageCompleted) return;
+		
+		if(textIndex >= lastIndex) {
+			if(optionText.length > 0) {
+				Variables.textOptions = optionText;
+				Variables.displayTextOptions = true;
+				
+				if(waitAFrame) {
+					if(Variables.readyForNextTextBox) {
+						chosenOption = Variables.chosenTextOption;
+						Variables.displayTextOptions = false;
+						Variables.messageCompleted = false;
+						Variables.displayingText = false;
+						Variables.readyForNextTextBox = false;
+						textIndex = 0;
+						readyToFinish = true;
+					}
+				}
+				waitAFrame = true;
+			}
+			else {
+				if(Variables.readyForNextTextBox) {
+					Variables.displayingText = false;
+					Variables.messageCompleted = false;
+					Variables.readyForNextTextBox = false;
+					textIndex = 0;
+					readyToFinish = true;
+				}
+			}
+		}
+		else if(Variables.readyForNextTextBox) {
+			Variables.currentMessage = textData[textIndex];
+		}
+		
+	}
+	
+	//Need to add an overrided version of the end() method.
 }

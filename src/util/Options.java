@@ -35,4 +35,7 @@ public class Options {
 	public static Actions povL = Actions.UNASSIGNED;
 	public static Actions[] buttons = new Actions[20];
 	
+	//Other options:
+	public static int framesPerChar = 1;
+	
 }

@@ -13,4 +13,9 @@ public class Constants {
 	//World Movement
 	public static final int pixelsPerFrameWalking = 1;
 	public static final int pixelsPerFrameRunning = 2;
+	
+	//Option related constants
+	public static final int slowTextSpeed = 3;
+	public static final int mediumTextSpeed = 2;
+	public static final int fastTextSpeed = 1;
 }

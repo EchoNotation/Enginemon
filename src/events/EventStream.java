@@ -44,6 +44,7 @@ public class EventStream {
 	 * Called once when the EventStream is slated to begin.
 	 */
 	public void init() {
+		System.out.println("Event stream begin!");
 		if(hasStarted) return;
 		seqIndex = 0;
 		readyToFinish = false;
@@ -53,8 +54,6 @@ public class EventStream {
 		for(int i = 0; i < parallelEvents.length; i++) {
 			parallelEventsLeft.add(parallelEvents[i]);
 		}
-		
-		System.out.println("Event stream begin!");
 	}
 	
 	/**

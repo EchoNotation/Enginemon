@@ -3,21 +3,21 @@ package io;
 import util.Constants;
 
 public class InputManager {
-	private KeyManager keys;
-	private ControllerManager controller;
-	private int[] inputTimeouts;
+	private static KeyManager keys;
+	private static ControllerManager controller;
+	private static int[] inputTimeouts;
 	
-	public boolean upF, downF, leftF, rightF, confirmF, cancelF, menuF, functionF;
-	public boolean upR, downR, leftR, rightR, confirmR, cancelR, menuR, functionR;
-	public boolean up, down, left, right, confirm, cancel, menu, function;
+	public static boolean upF, downF, leftF, rightF, confirmF, cancelF, menuF, functionF;
+	public static boolean upR, downR, leftR, rightR, confirmR, cancelR, menuR, functionR;
+	public static boolean up, down, left, right, confirm, cancel, menu, function;
 	
-	public InputManager(KeyManager keys, ControllerManager controller) {
-		this.keys = keys;
-		this.controller = controller;
+	public static void init(KeyManager keyM, ControllerManager controllerM) {
+		keys = keyM;
+		controller = controllerM;
 		inputTimeouts = new int[8];
 	}
 
-	public void tick() {
+	public static void tick() {
 		upF = keys.upF || controller.upF;
 		downF = keys.downF || controller.downF;
 		leftF = keys.leftF || controller.leftF;

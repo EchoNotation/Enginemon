@@ -36,7 +36,6 @@ public class Game {
 	private Window window;
 	private KeyManager keys;
 	private ControllerManager controller;
-	private InputManager input;
 	private Player player;
 	private Camera camera;
 	
@@ -49,7 +48,7 @@ public class Game {
 	public Game() {
 		keys = new KeyManager();
 		controller = new ControllerManager();
-		input = new InputManager(keys, controller);
+		InputManager.init(keys, controller);
 		window = new Window("Enginemon", 720, 624, keys);
 	}
 	
@@ -75,14 +74,15 @@ public class Game {
 		collisionData = MapLoader.currentCollisionData;
 		eventIndices = new int[collisionData.length][];
 		eventData = new ArrayList<EventStream>();
-		foundIndices = new ArrayList<Integer>();
+		//foundIndices = new ArrayList<Integer>();
 		eventData.add(EventTable.getEventStream(0));
-		foundIndices.add(0);
+		eventData.add(EventTable.getEventStream(1));
+		//foundIndices.add(0);
 		
 		for(int i = 0; i < collisionData.length; i++) {
 			eventIndices[i] = new int[collisionData[i].length];
 			for(int j = 0; j < eventIndices[i].length; j++) {			
-				eventIndices[i][j] = -1;
+				eventIndices[i][j] = 1;
 			}
 		}
 		run();
@@ -145,7 +145,7 @@ public class Game {
 		//System.out.println("Tick!");
 		switch(gameState) {
 		case WORLD:
-			if(input.function) {
+			if(InputManager.function) {
 				if(camera.getCameraMode() == CameraMode.FOCUS_ON_PLAYER) {
 					camera.changeCameraMode(CameraMode.FREE);
 				}
@@ -186,7 +186,7 @@ public class Game {
 		player.tick();
 		camera.tick();
 		window.tick(gameState, camera, player);
-		input.tick();
+		InputManager.tick();
 	}
 	
 	/**
@@ -211,7 +211,7 @@ public class Game {
 					currentEventIndex = eventIndices[player.getYPos()][player.getXPos()];
 				}
 				
-				if(input.upR) {
+				if(InputManager.upR) {
 					upCollision = getCollisionID(player.getXPos(), player.getYPos() - 1);
 					upPassable = parseCollision(upCollision, MoveDirection.UP);
 					
@@ -221,7 +221,7 @@ public class Game {
 						Variables.moveDir = MoveDirection.UP;
 					}					
 				}
-				else if(input.downR) {
+				else if(InputManager.downR) {
 					downCollision = getCollisionID(player.getXPos(), player.getYPos() + 1);
 					downPassable = parseCollision(downCollision, MoveDirection.DOWN);
 					
@@ -231,7 +231,7 @@ public class Game {
 						Variables.moveDir = MoveDirection.DOWN;
 					}				
 				}
-				else if(input.leftR) {
+				else if(InputManager.leftR) {
 					leftCollision = getCollisionID(player.getXPos() - 1, player.getYPos());
 					leftPassable = parseCollision(leftCollision, MoveDirection.LEFT);
 					
@@ -241,7 +241,7 @@ public class Game {
 						Variables.moveDir = MoveDirection.LEFT;
 					}				
 				}
-				else if(input.rightR) {
+				else if(InputManager.rightR) {
 					rightCollision = getCollisionID(player.getXPos() + 1, player.getYPos());	
 					rightPassable = parseCollision(rightCollision, MoveDirection.RIGHT);
 					
@@ -253,7 +253,7 @@ public class Game {
 				}
 				
 				if(Variables.movingOverTile) {
-					Variables.tileCrossSpeed = input.cancelR ? Constants.pixelsPerFrameRunning : Constants.pixelsPerFrameWalking;
+					Variables.tileCrossSpeed = InputManager.cancelR ? Constants.pixelsPerFrameRunning : Constants.pixelsPerFrameWalking;
 				}
 			}
 			else {
@@ -261,7 +261,7 @@ public class Game {
 			}
 		}
 		else {
-			if(input.upR) {
+			if(InputManager.upR) {
 				upCollision = getCollisionID(player.getXPos(), player.getYPos() - 1);
 				upPassable = parseCollision(upCollision, MoveDirection.UP);
 				
@@ -271,7 +271,7 @@ public class Game {
 					Variables.moveDir = MoveDirection.UP;
 				}		
 			}
-			else if(input.downR) {
+			else if(InputManager.downR) {
 				downCollision = getCollisionID(player.getXPos(), player.getYPos() + 1);
 				downPassable = parseCollision(downCollision, MoveDirection.DOWN);
 				
@@ -281,7 +281,7 @@ public class Game {
 					Variables.moveDir = MoveDirection.DOWN;
 				}			
 			}
-			else if(input.leftR) {
+			else if(InputManager.leftR) {
 				leftCollision = getCollisionID(player.getXPos() - 1, player.getYPos());
 				leftPassable = parseCollision(leftCollision, MoveDirection.LEFT);
 				
@@ -291,7 +291,7 @@ public class Game {
 					Variables.moveDir = MoveDirection.LEFT;
 				}			
 			}
-			else if(input.rightR) {
+			else if(InputManager.rightR) {
 				rightCollision = getCollisionID(player.getXPos() + 1, player.getYPos());	
 				rightPassable = parseCollision(rightCollision, MoveDirection.RIGHT);
 				
@@ -303,7 +303,7 @@ public class Game {
 			}
 			
 			if(Variables.movingOverTile) {
-				Variables.tileCrossSpeed = input.cancelR ? Constants.pixelsPerFrameRunning : Constants.pixelsPerFrameWalking;
+				Variables.tileCrossSpeed = InputManager.cancelR ? Constants.pixelsPerFrameRunning : Constants.pixelsPerFrameWalking;
 			}
 		}		
 	}

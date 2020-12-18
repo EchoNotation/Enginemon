@@ -13,6 +13,7 @@ import entities.Player;
 import io.Camera.CameraMode;
 import main.Game.GameState;
 import util.Constants;
+import util.Options;
 import util.Tilesets;
 import util.Variables;
 
@@ -29,6 +30,12 @@ public class Window {
 	private BufferedImage[] currentTileset;
 	private Camera.CameraMode cMode;
 	private int cameraX, cameraY;
+	
+	private int textMessageIndex = 0;
+	private String currentlyDisplayedPortion = "";
+	private int charFrameCounter = 1;
+	private int textOptionsCursorPos = 0;
+	private int textBoxHeight = 20;
 	
 	public Window(String title, int width, int height, KeyManager keys) {
 		this.title = title;
@@ -58,6 +65,7 @@ public class Window {
 		cMode = camera.getCameraMode();
 		cameraX = camera.getFocusX();
 		cameraY = camera.getFocusY();
+		
 		render(gameState, camera, player);
 	}
 	
@@ -110,10 +118,10 @@ public class Window {
 				//System.out.println("pixelsPerTile + yOffset: " + (pixelsPerTile + yOffset) + " Height: " + pixelsPerTile * (tilesPerRow - 2));
 				//System.out.println("prePlayerImg height: " + prePlayerImg.getHeight());
 				BufferedImage shiftedImg = prePlayerImg.getSubimage(pixelsPerTile + xOffset, pixelsPerTile + yOffset, pixelsPerTile * (tilesPerRow - 2), pixelsPerTile * (tilesPerColumn - 2));
-				finalImg = renderPlayer(shiftedImg, player);
+				finalImg = renderTextbox(renderPlayer(shiftedImg, player));
 			}
 			else {
-				finalImg = renderPlayer(prePlayerImg.getSubimage(pixelsPerTile, pixelsPerTile, pixelsPerTile * (tilesPerRow - 2), pixelsPerTile * (tilesPerColumn - 2)), player);
+				finalImg = renderTextbox(renderPlayer(prePlayerImg.getSubimage(pixelsPerTile, pixelsPerTile, pixelsPerTile * (tilesPerRow - 2), pixelsPerTile * (tilesPerColumn - 2)), player));
 			}
 			
 			g.drawImage(finalImg, 0, 0, width, height, null);
@@ -190,11 +198,56 @@ public class Window {
 				System.out.println("Invalid moveDir when calculating x and y offsets! Direction: " + Variables.moveDir);
 				break;
 			}
-			
 			img.getGraphics().fillRect(((player.getXPos() - cameraX) * Constants.pixelsPerTile) + widthOffset, ((player.getYPos() - cameraY) * Constants.pixelsPerTile) + heightOffset, 12, 12);
 		}
 		//img.getGraphics().drawString("" + Variables.numberOfConnectedControllers, 20, 20);
 		
 		return img;
+	}
+	
+	private BufferedImage renderTextbox(BufferedImage img) {
+		BufferedImage temp = new BufferedImage(img.getWidth(), img.getHeight(), img.getType());
+		temp.getGraphics().drawImage(img, 0, 0, width, height, null);
+		boolean needOptionsBox = false;
+		//System.out.println("render function running.");
+		if(Variables.displayingText) {
+			//System.out.println("Attempting to render text...");
+			if(Variables.messageCompleted) {
+				if(Variables.displayTextOptions) {
+					needOptionsBox = true;
+					
+					if(InputManager.confirm) {
+						Variables.chosenTextOption = textOptionsCursorPos;
+					}
+				}
+				else if(InputManager.confirmR || InputManager.cancelR) {
+					Variables.readyForNextTextBox = true;
+					textMessageIndex = 0;
+				}
+			}
+			else {
+				if(Options.framesPerChar <= charFrameCounter) {
+					charFrameCounter = 1;
+					textMessageIndex += 1;
+				}
+				else {
+					charFrameCounter++;
+				}
+			}
+			
+			//img.getGraphics().setColor(Color.DARK_GRAY);
+			temp.getGraphics().fillRect(100, 0, 100, 100);
+			//img.getGraphics().fillRect(0, height - textBoxHeight, width, textBoxHeight);
+			if(textMessageIndex >= Variables.currentMessage.length()) {
+				textMessageIndex = Variables.currentMessage.length() - 1;
+				Variables.messageCompleted = true;
+			}
+			String textToDisplay = Variables.currentMessage.substring(0, textMessageIndex);
+			//System.out.println("TextToDisplay: " + textToDisplay);
+			//img.getGraphics().setColor(Color.WHITE);
+			img.getGraphics().drawString(textToDisplay, 7, height - textBoxHeight + 7);
+		}
+		
+		return temp;
 	}
 }
