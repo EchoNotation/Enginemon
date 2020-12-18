@@ -62,6 +62,9 @@ public class TextEvent extends Event {
 		waitAFrame = false;
 	}
 	
+	/**
+	 * Runs continuously while text is being displayed.
+	 */
 	@Override
 	public void tick() {
 		//System.out.println("Tick TextEvent!");
@@ -101,5 +104,14 @@ public class TextEvent extends Event {
 		
 	}
 	
-	//Need to add an overrided version of the end() method.
+	/**
+	 * Runs once the last textbox has been cleared.
+	 * @return The index of the options text that was chosen (-1 if no options text was provided).
+	 */
+	@Override
+	public int end() {
+		hasStarted = false;
+		readyToFinish = false;
+		return chosenOption;
+	}
 }

@@ -202,11 +202,14 @@ public class Window {
 					}
 				}
 				
+				//TODO This section will eventially be rewritten to use a custom font and properly separate long strings on to multiple lines.
+				//This section is only temporary.
 				g.setColor(Color.DARK_GRAY);
 				//g.fillRect(100, 0, 100, 100);
-				g.fillRect(0, height - textboxHeight, width, textboxHeight);
+				g.fillRoundRect(0, height - textboxHeight, width-1, textboxHeight-1, 5, 5);
 				g.setColor(Color.LIGHT_GRAY);
-				g.drawRect(0, height - textboxHeight, width-1, textboxHeight-1);
+				//g.drawRect(0, height - textboxHeight, width-1, textboxHeight-1);
+				g.drawRoundRect(0, height - textboxHeight, width-1, textboxHeight-1, 5, 5);
 				if(textMessageIndex >= Variables.currentMessage.length()) {
 					textMessageIndex = Variables.currentMessage.length() - 1;
 					Variables.messageCompleted = true;
@@ -214,8 +217,8 @@ public class Window {
 				String textToDisplay = Variables.currentMessage.substring(0, textMessageIndex);
 				//System.out.println("TextToDisplay: " + textToDisplay);
 				g.setColor(Color.WHITE);
-				g.setFont(new Font("Arial", Font.PLAIN, 20));
-				g.drawString(textToDisplay, 100, 100);
+				g.setFont(new Font("Arial", Font.PLAIN, 25));
+				g.drawString(textToDisplay, 20, height - textboxHeight + 40);
 			}
 			
 			gOverall.drawImage(finalImg, 0, 0, width, height, null);
