@@ -70,7 +70,8 @@ public class TextEvent extends Event {
 		//System.out.println("Tick TextEvent!");
 		if(!Variables.messageCompleted) return;
 		
-		if(textIndex >= lastIndex) {
+		if(textIndex > lastIndex) {
+			//System.out.println("Hit the last textbox!");
 			if(optionText.length > 0) {
 				Variables.textOptions = optionText;
 				Variables.displayTextOptions = true;
@@ -99,7 +100,10 @@ public class TextEvent extends Event {
 			}
 		}
 		else if(Variables.readyForNextTextBox) {
+			Variables.messageCompleted = false;
+			Variables.readyForNextTextBox = false;
 			Variables.currentMessage = textData[textIndex];
+			textIndex++;
 		}
 		
 	}

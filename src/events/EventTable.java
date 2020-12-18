@@ -25,8 +25,9 @@ public class EventTable {
 		}
 		else if(eventID == 1) {
 			Event[] seq = new Event[1];
-			String[] textData = new String[1];
-			textData[0] = "This is a test of the text display system!";
+			String[] textData = new String[2];
+			textData[0] = "This is a test of the text display system...";
+			textData[1] = "...And this is the follow-up message!";
 			seq[0] = new TextEvent(textData, new String[0]);
 			return new EventStream(1, 1, seq, new Event[0], -1, -1);
 		}

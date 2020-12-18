@@ -211,7 +211,7 @@ public class Window {
 				//g.drawRect(0, height - textboxHeight, width-1, textboxHeight-1);
 				g.drawRoundRect(0, height - textboxHeight, width-1, textboxHeight-1, 5, 5);
 				if(textMessageIndex >= Variables.currentMessage.length()) {
-					textMessageIndex = Variables.currentMessage.length() - 1;
+					textMessageIndex = Variables.currentMessage.length();
 					Variables.messageCompleted = true;
 				}
 				String textToDisplay = Variables.currentMessage.substring(0, textMessageIndex);
