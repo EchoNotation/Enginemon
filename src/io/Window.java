@@ -206,8 +206,6 @@ public class Window {
 	}
 	
 	private BufferedImage renderTextbox(BufferedImage img) {
-		BufferedImage temp = new BufferedImage(img.getWidth(), img.getHeight(), img.getType());
-		temp.getGraphics().drawImage(img, 0, 0, width, height, null);
 		boolean needOptionsBox = false;
 		//System.out.println("render function running.");
 		if(Variables.displayingText) {
@@ -236,7 +234,7 @@ public class Window {
 			}
 			
 			//img.getGraphics().setColor(Color.DARK_GRAY);
-			temp.getGraphics().fillRect(100, 0, 100, 100);
+			img.getGraphics().fillRect(100, 0, 100, 100);
 			//img.getGraphics().fillRect(0, height - textBoxHeight, width, textBoxHeight);
 			if(textMessageIndex >= Variables.currentMessage.length()) {
 				textMessageIndex = Variables.currentMessage.length() - 1;
@@ -248,6 +246,6 @@ public class Window {
 			img.getGraphics().drawString(textToDisplay, 7, height - textBoxHeight + 7);
 		}
 		
-		return temp;
+		return img;
 	}
 }
