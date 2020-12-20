@@ -33,7 +33,9 @@ public class EventSequencer {
 	 * @param toAdd The EventStream to add.
 	 */
 	public static void enqueueEventStream(EventStream toAdd) {
-		eventStreamQueue.add(toAdd);
+		if(toAdd.getGlobalID() != -1) {
+			eventStreamQueue.add(toAdd);
+		}
 	}
 	
 	/**

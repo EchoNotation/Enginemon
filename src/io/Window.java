@@ -249,7 +249,7 @@ public class Window {
 					Variables.messageCompleted = true;
 				}
 				String textToDisplay = currentMessage.substring(0, textMessageIndex);
-				System.out.println("TextToDisplay: " + textToDisplay);
+				//System.out.println("TextToDisplay: " + textToDisplay);
 				g.setColor(Color.WHITE);
 				g.setFont(new Font("Arial", Font.PLAIN, 25));
 				g.drawString(textToDisplay, 20, height - textboxHeight + 40);

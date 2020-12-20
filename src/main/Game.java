@@ -77,7 +77,7 @@ public class Game {
 		for(int i = 0; i < collisionData.length; i++) {
 			eventIndices[i] = new int[collisionData[i].length];
 			for(int j = 0; j < eventIndices[i].length; j++) {			
-				eventIndices[i][j] = 1;
+				eventIndices[i][j] = -1;
 			}
 		}
 		run();
