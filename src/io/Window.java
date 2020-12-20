@@ -33,6 +33,8 @@ public class Window {
 	private Camera.CameraMode cMode;
 	private int cameraX, cameraY;
 	
+	private int framesToDrawTextbox = 0;
+	private String currentMessage;
 	private int textMessageIndex = 0;
 	private String currentlyDisplayedPortion = "";
 	private int charFrameCounter = 1;
@@ -182,6 +184,14 @@ public class Window {
 			int numberOfOptions = -1;
 			//System.out.println("render function running.");
 			if(Variables.displayingText) {
+				framesToDrawTextbox = Constants.framesToDisplayText;
+			}
+			else {
+				framesToDrawTextbox--;
+			}
+			
+			if(framesToDrawTextbox > 0) {
+				currentMessage = Variables.currentMessage;
 				//System.out.println("Attempting to render text...");
 				if(Variables.messageCompleted) {
 					if(Variables.displayTextOptions) {
@@ -201,19 +211,22 @@ public class Window {
 							}
 						}
 						
-						if(InputManager.confirm) {
+						if(InputManager.confirmF) {
 							needOptionsBox = false;
 							Variables.chosenTextOption = textOptionsCursorPos;
 							textOptionsCursorPos = 0;
+							framesToDrawTextbox = Constants.framesToDisplayText;
+							textMessageIndex = 0;
 							Variables.readyForNextTextBox = true;
 						}
 					}
-					else if(InputManager.confirmR || InputManager.cancelR) {
+					else if(InputManager.confirmF || InputManager.cancelF) {
 						Variables.readyForNextTextBox = true;
 						textMessageIndex = 0;
 					}
 				}
 				else {
+					//System.out.println("Message not yet completed!");
 					if(Options.framesPerChar <= charFrameCounter) {
 						charFrameCounter = 1;
 						textMessageIndex += 1;
@@ -231,12 +244,12 @@ public class Window {
 				g.setColor(Color.LIGHT_GRAY);
 				//g.drawRect(0, height - textboxHeight, width-1, textboxHeight-1);
 				g.drawRoundRect(0, height - textboxHeight, width-1, textboxHeight-1, 5, 5);
-				if(textMessageIndex >= Variables.currentMessage.length()) {
-					textMessageIndex = Variables.currentMessage.length();
+				if(textMessageIndex >= currentMessage.length()) {
+					textMessageIndex = currentMessage.length();
 					Variables.messageCompleted = true;
 				}
-				String textToDisplay = Variables.currentMessage.substring(0, textMessageIndex);
-				//System.out.println("TextToDisplay: " + textToDisplay);
+				String textToDisplay = currentMessage.substring(0, textMessageIndex);
+				System.out.println("TextToDisplay: " + textToDisplay);
 				g.setColor(Color.WHITE);
 				g.setFont(new Font("Arial", Font.PLAIN, 25));
 				g.drawString(textToDisplay, 20, height - textboxHeight + 40);

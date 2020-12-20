@@ -49,7 +49,10 @@ public class EventStream {
 		seqIndex = 0;
 		readyToFinish = false;
 		hasStarted = true;
-		sequentialEvents[0].init(-1);
+		
+		if(sequentialEvents.length > 0) {
+			sequentialEvents[0].init(-1);
+		}
 		
 		for(int i = 0; i < parallelEvents.length; i++) {
 			parallelEventsLeft.add(parallelEvents[i]);

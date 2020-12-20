@@ -45,7 +45,7 @@ public class TextEvent extends Event {
 	 */
 	@Override
 	public void init(int input) {
-		//System.out.println("Begin text event! Starting message = " + textData[0]);
+		System.out.println("Begin text event! Starting message = " + textData[0]);
 		if(textData.length <= 0) {
 			readyToFinish = true;
 			return;

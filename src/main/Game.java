@@ -3,6 +3,7 @@ package main;
 import java.util.ArrayList;
 
 import entities.Player;
+import events.EventSequencer;
 import events.EventStream;
 import events.EventTable;
 import io.Camera;
@@ -41,9 +42,6 @@ public class Game {
 	
 	private int[][] collisionData;
 	private int[][] eventIndices;
-	private ArrayList<EventStream> eventData;
-	private ArrayList<Integer> foundIndices;
-	private int currentEventIndex = -1;
 
 	public Game() {
 		keys = new KeyManager();
@@ -73,16 +71,13 @@ public class Game {
 		
 		collisionData = MapLoader.currentCollisionData;
 		eventIndices = new int[collisionData.length][];
-		eventData = new ArrayList<EventStream>();
 		//foundIndices = new ArrayList<Integer>();
-		eventData.add(EventTable.getEventStream(0));
-		eventData.add(EventTable.getEventStream(1));
 		//foundIndices.add(0);
 		
 		for(int i = 0; i < collisionData.length; i++) {
 			eventIndices[i] = new int[collisionData[i].length];
 			for(int j = 0; j < eventIndices[i].length; j++) {			
-				eventIndices[i][j] = -1;
+				eventIndices[i][j] = 1;
 			}
 		}
 		run();
@@ -143,6 +138,7 @@ public class Game {
 	 */
 	private void tick() {
 		//System.out.println("Tick!");
+		EventSequencer.tick();
 		switch(gameState) {
 		case WORLD:
 			if(InputManager.function) {
@@ -152,23 +148,6 @@ public class Game {
 				else {
 					camera.changeCameraMode(CameraMode.FOCUS_ON_PLAYER);
 				}
-			}
-			
-			if(currentEventIndex == -1) {
-				
-			}
-			else if(eventData.get(currentEventIndex).hasStarted()) {
-				eventData.get(currentEventIndex).tick();
-				
-				if(eventData.get(currentEventIndex).hasFinished()) {
-					eventData.get(currentEventIndex).end();
-					currentEventIndex = -1;
-					Variables.lockPlayerMovement = false;
-				}
-			}
-			else {
-				eventData.get(currentEventIndex).init();
-				Variables.lockPlayerMovement = true;
 			}
 			
 			if(!Variables.lockPlayerMovement) {
@@ -204,11 +183,8 @@ public class Game {
 				Variables.movingOverTile = false;
 				Variables.moveDir = MoveDirection.NONE;
 				
-				if(player.getXPos() < 0 || player.getXPos() >= eventIndices[0].length || player.getYPos() < 0 || player.getYPos() >= eventIndices.length) {
-					currentEventIndex = -1;
-				}
-				else {
-					currentEventIndex = eventIndices[player.getYPos()][player.getXPos()];
+				if(!(player.getXPos() < 0 || player.getXPos() >= eventIndices[0].length || player.getYPos() < 0 || player.getYPos() >= eventIndices.length)) {
+					EventSequencer.enqueueEventStream(EventTable.getEventStream(eventIndices[player.getYPos()][player.getXPos()]));
 				}
 				
 				if(InputManager.upR) {
