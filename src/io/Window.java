@@ -38,6 +38,9 @@ public class Window {
 	private int charFrameCounter = 1;
 	private int textOptionsCursorPos = 0;
 	private int textboxHeight = 120;
+	private int optionsBoxWidth = 120;
+	private int optionsBoxBorder = 30;
+	private int heightPerOption = 30;
 	
 	public Window(String title, int width, int height, KeyManager keys) {
 		this.title = title;
@@ -176,15 +179,33 @@ public class Window {
 			g.drawImage(postShiftingImg, 0, 0, width, height, null);
 			//Render any curently needed textboxes to the screen, and account for current textbox logic.
 			boolean needOptionsBox = false;
+			int numberOfOptions = -1;
 			//System.out.println("render function running.");
 			if(Variables.displayingText) {
 				//System.out.println("Attempting to render text...");
 				if(Variables.messageCompleted) {
 					if(Variables.displayTextOptions) {
 						needOptionsBox = true;
+						numberOfOptions = Variables.textOptions.length;
+						
+						if(InputManager.up) {
+							textOptionsCursorPos--;
+							if(textOptionsCursorPos <= -1) {
+								textOptionsCursorPos = numberOfOptions - 1;
+							}
+						}
+						else if(InputManager.down) {
+							textOptionsCursorPos++;
+							if(textOptionsCursorPos >= numberOfOptions) {
+								textOptionsCursorPos = 0;
+							}
+						}
 						
 						if(InputManager.confirm) {
+							needOptionsBox = false;
 							Variables.chosenTextOption = textOptionsCursorPos;
+							textOptionsCursorPos = 0;
+							Variables.readyForNextTextBox = true;
 						}
 					}
 					else if(InputManager.confirmR || InputManager.cancelR) {
@@ -219,6 +240,28 @@ public class Window {
 				g.setColor(Color.WHITE);
 				g.setFont(new Font("Arial", Font.PLAIN, 25));
 				g.drawString(textToDisplay, 20, height - textboxHeight + 40);
+				
+				if(needOptionsBox) {
+					String[] options = Variables.textOptions;
+					int x = width-optionsBoxWidth;
+					int boxHeight = (2*optionsBoxBorder) + (numberOfOptions*heightPerOption);
+					int y = height-textboxHeight-boxHeight;	
+					
+					g.setColor(Color.DARK_GRAY);
+					g.fillRoundRect(x, y, optionsBoxWidth, boxHeight, 5, 5);
+					g.setColor(Color.LIGHT_GRAY);
+					g.drawRoundRect(x, y, optionsBoxWidth-1, boxHeight-1, 5, 5);
+					
+					for(int i = 0; i < options.length; i++) {					
+						if(i == textOptionsCursorPos) {
+							g.setColor(Color.GRAY);
+						}
+						else {
+							g.setColor(Color.WHITE);
+						}
+						g.drawString(options[i], x+20, y+optionsBoxBorder+(i*heightPerOption));
+					}
+				}
 			}
 			
 			gOverall.drawImage(finalImg, 0, 0, width, height, null);

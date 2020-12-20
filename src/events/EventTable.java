@@ -25,10 +25,15 @@ public class EventTable {
 		}
 		else if(eventID == 1) {
 			Event[] seq = new Event[1];
-			String[] textData = new String[2];
+			String[] textData = new String[3];
 			textData[0] = "This is a test of the text display system...";
 			textData[1] = "...And this is the follow-up message!";
-			seq[0] = new TextEvent(textData, new String[0]);
+			textData[2] = "Capiche?";
+			String[] optionData = new String[3];
+			optionData[0] = "Sure";
+			optionData[1] = "Never!";
+			optionData[2] = "What?";
+			seq[0] = new TextEvent(textData, optionData);
 			return new EventStream(1, 1, seq, new Event[0], -1, -1);
 		}
 		return new EventStream(-1, -1, new Event[0], new Event[0], -1, -1);

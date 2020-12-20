@@ -116,6 +116,7 @@ public class TextEvent extends Event {
 	public int end() {
 		hasStarted = false;
 		readyToFinish = false;
+		System.out.println("Chose option: " + chosenOption);
 		return chosenOption;
 	}
 }
