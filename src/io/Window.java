@@ -162,7 +162,7 @@ public class Window {
 					System.out.println("Invalid moveDir when calculating x and y offsets! Direction: " + Variables.moveDir);
 					break;
 				}
-				postShiftingImg = img;
+				postShiftingImg = img.getSubimage(pixelsPerTile, pixelsPerTile, pixelsPerTile * (tilesPerRow - 2), pixelsPerTile * (tilesPerColumn - 2));
 				g = postShiftingImg.createGraphics();
 				g.setColor(Color.WHITE);
 				g.fillRect(((player.getXPos() - cameraX) * Constants.pixelsPerTile) + widthOffset, ((player.getYPos() - cameraY) * Constants.pixelsPerTile) + heightOffset, 12, 12);
