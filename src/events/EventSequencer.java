@@ -19,7 +19,10 @@ public class EventSequencer {
 			if(eventStreamQueue.get(0).hasFinished()) {
 				eventStreamQueue.get(0).end();
 				eventStreamQueue.remove(0);
-				Variables.lockPlayerMovement = false;
+				
+				if(numberOfEnqueuedStreams() == 0) {
+					Variables.lockPlayerMovement = false;
+				}
 			}
 		}
 		else {

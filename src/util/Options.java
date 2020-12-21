@@ -36,6 +36,6 @@ public class Options {
 	public static Actions[] buttons = new Actions[20];
 	
 	//Other options:
-	public static int framesPerChar = Constants.fastTextSpeed;
+	public static int framesPerChar = 0;
 	
 }

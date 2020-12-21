@@ -1,5 +1,6 @@
 package events;
 
+import util.Constants;
 import util.Variables;
 
 /**
@@ -13,6 +14,8 @@ public class TextEvent extends Event {
 	private int lastIndex;
 	private int chosenOption;
 	private boolean waitAFrame;
+	private int framesToWait;
+	private boolean stopping;
 
 	/**
 	 * Creates a new sequential TextEvent.
@@ -60,6 +63,8 @@ public class TextEvent extends Event {
 		lastIndex = textData.length - 1;
 		chosenOption = -1;
 		waitAFrame = false;
+		framesToWait = Constants.framesToDisplayText;
+		stopping = false;
 	}
 	
 	/**
@@ -67,6 +72,22 @@ public class TextEvent extends Event {
 	 */
 	@Override
 	public void tick() {
+		if(stopping) {
+			framesToWait--;
+			//System.out.println("Waiting...");
+			if(framesToWait <= 0) {
+				//System.out.println("Waited!");
+				Variables.displayTextOptions = false;
+				Variables.messageCompleted = false;
+				Variables.displayingText = false;
+				Variables.readyForNextTextBox = false;
+				Variables.waitingAfterSelection = false;
+				textIndex = 0;
+				readyToFinish = true;
+			}
+			return;
+		}
+		
 		//System.out.println("Tick TextEvent!");
 		if(!Variables.messageCompleted) return;
 		
@@ -79,12 +100,8 @@ public class TextEvent extends Event {
 				if(waitAFrame) {
 					if(Variables.readyForNextTextBox) {
 						chosenOption = Variables.chosenTextOption;
-						Variables.displayTextOptions = false;
-						Variables.messageCompleted = false;
-						Variables.displayingText = false;
-						Variables.readyForNextTextBox = false;
-						textIndex = 0;
-						readyToFinish = true;
+						stopping = true;
+						Variables.waitingAfterSelection = true;
 					}
 				}
 				waitAFrame = true;

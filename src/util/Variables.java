@@ -26,6 +26,7 @@ public class Variables {
 	public static boolean readyForNextTextBox = false;
 	public static boolean messageCompleted = false;
 	public static boolean displayTextOptions = false;
+	public static boolean waitingAfterSelection = false;
 	public static String currentMessage = "Message was not set!";
 	public static String[] textOptions = new String[0];
 	public static int chosenTextOption = -1;
