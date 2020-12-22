@@ -1,15 +1,15 @@
 package events;
 
 public class SelectionBranchEvent extends Event {
-	private EventStream[] streams;
+	private int[] streamIndices;
 	
 	/**
 	 * Creates a new SelectionBranchEvent.
 	 * @param streams The array of EventStreams to choose from.
 	 */
-	public SelectionBranchEvent(int inputIndex, EventStream[] streams) {
+	public SelectionBranchEvent(int inputIndex, int[] streamIndices) {
 		super(inputIndex);
-		this.streams = streams;
+		this.streamIndices = streamIndices;
 	}
 	
 	/**
@@ -22,11 +22,11 @@ public class SelectionBranchEvent extends Event {
 		hasStarted = true;
 		readyToFinish = true;
 		
-		if(input < 0 || input >= streams.length) {
+		if(input < 0 || input >= streamIndices.length) {
 			System.out.println("Invalid input into SelectionBranchEvent!");
 			return;
 		}
 		
-		EventSequencer.enqueueEventStream(streams[input]);
+		EventSequencer.enqueueEventStream(EventTable.getEventStream(streamIndices[input]));
 	}
 }

@@ -34,20 +34,26 @@ public class EventTable {
 			optionData[1] = "Never!";
 			optionData[2] = "What?";
 			seq[0] = new TextEvent(-1, textData, optionData);
+			int[] streamIDs = new int[3];
+			streamIDs[0] = 2;
+			streamIDs[1] = 3;
+			streamIDs[2] = 1;
+			seq[1] = new SelectionBranchEvent(0, streamIDs);
+			return new EventStream(1, 1, seq, new Event[0], -1, -1);
+		}
+		else if(eventID == 2) {
 			String[] textData2 = new String[1];
 			textData2[0] = "Sweet.";
-			String[] textData3 = new String[1];
-			textData3[0] = "Very well Mr. Bond, but now I will have to kill you.";
-			EventStream[] followupEvents = new EventStream[3];
 			Event[] seq2 = new Event[1];
 			seq2[0] = new TextEvent(-1, textData2, new String[0]);
+			return new EventStream(2, 2, seq2, new Event[0], -1, -1);
+		}
+		else if(eventID == 3) {
+			String[] textData3 = new String[1];
+			textData3[0] = "Very well Mr. Bond, but now I will have to kill you.";
 			Event[] seq3 = new Event[1];
 			seq3[0] = new TextEvent(-1, textData3, new String[0]);
-			followupEvents[0] = new EventStream(2, 2, seq2, new Event[0], -1, -1);
-			followupEvents[1] = new EventStream(3, 3, seq3, new Event[0], -1, -1);
-			followupEvents[2] = new EventStream(-1, -1, new Event[0], new Event[0], -1, -1);
-			seq[1] = new SelectionBranchEvent(0, followupEvents);
-			return new EventStream(1, 1, seq, new Event[0], -1, -1);
+			return new EventStream(3, 3, seq3, new Event[0], -1, -1);
 		}
 		return new EventStream(-1, -1, new Event[0], new Event[0], -1, -1);
 	}
