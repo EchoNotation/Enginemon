@@ -19,8 +19,9 @@ public class Event {
 	 * Creates a new sequential Event, should only be used as super() in other Event classes.
 	 * @param inputIndex The index of the sequential events that should form the input for this event.
 	 */
-	public Event() {
+	public Event(int inputIndex) {
 		isParallel = false;
+		this.inputIndex = inputIndex;
 	}
 	
 	/**

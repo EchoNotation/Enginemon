@@ -12,8 +12,8 @@ public class DelayEvent extends Event {
 	 * Creates a new sequential DelayEvent.
 	 * @param framesToDelay The number of frames to delay before completing.
 	 */
-	public DelayEvent(int framesToDelay) {
-		super();
+	public DelayEvent(int inputIndex, int framesToDelay) {
+		super(inputIndex);
 		this.framesToDelay = framesToDelay;
 	}
 	

@@ -77,7 +77,7 @@ public class Game {
 		for(int i = 0; i < collisionData.length; i++) {
 			eventIndices[i] = new int[collisionData[i].length];
 			for(int j = 0; j < eventIndices[i].length; j++) {			
-				eventIndices[i][j] = -1;
+				eventIndices[i][j] = 1;
 			}
 		}
 		run();
@@ -184,7 +184,10 @@ public class Game {
 				Variables.moveDir = MoveDirection.NONE;
 				
 				if(!(player.getXPos() < 0 || player.getXPos() >= eventIndices[0].length || player.getYPos() < 0 || player.getYPos() >= eventIndices.length)) {
-					EventSequencer.enqueueEventStream(EventTable.getEventStream(eventIndices[player.getYPos()][player.getXPos()]));
+					if(EventSequencer.numberOfEnqueuedStreams() == 0) {
+						System.out.println("Enqueued by step!");
+						EventSequencer.enqueueEventStream(EventTable.getEventStream(eventIndices[player.getYPos()][player.getXPos()]));
+					}
 				}
 				
 				if(InputManager.upR) {

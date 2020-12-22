@@ -22,8 +22,8 @@ public class TextEvent extends Event {
 	 * @param textData The strings that are to be displayed.
 	 * @param optionText Any text options the user may choose from, which will be provided after the last message.
 	 */
-	public TextEvent(String[] textData, String[] optionText) {
-		super();
+	public TextEvent(int inputIndex, String[] textData, String[] optionText) {
+		super(inputIndex);
 		this.textData = textData;
 		this.optionText = optionText;
 	}

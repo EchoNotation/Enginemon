@@ -12,8 +12,8 @@ public class PrintEvent extends Event {
 	 * Creates a new sequential PrintEvent.
 	 * @param message The string to be printed to the console.
 	 */
-	public PrintEvent(String message) {
-		super();
+	public PrintEvent(int inputIndex, String message) {
+		super(inputIndex);
 		this.message = message;
 	}
 	

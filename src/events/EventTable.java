@@ -16,9 +16,9 @@ public class EventTable {
 	public static EventStream getEventStream(int eventID) {
 		if(eventID == 0) {
 			Event[] seq = new Event[3];
-			seq[0] = new PrintEvent("This is a test of the...");
-			seq[1] = new DelayEvent(60);
-			seq[2] = new PrintEvent("Sequential Event System (TM)");
+			seq[0] = new PrintEvent(-1, "This is a test of the...");
+			seq[1] = new DelayEvent(-1, 60);
+			seq[2] = new PrintEvent(-1, "Sequential Event System (TM)");
 			Event[] par = new Event[1];
 			par[0] = new PrintEvent(1, 60, -1, "Parallel Event System (TM)");
 			return new EventStream(0, 0, seq, par, -1, -1);
@@ -33,20 +33,20 @@ public class EventTable {
 			optionData[0] = "Sure";
 			optionData[1] = "Never!";
 			optionData[2] = "What?";
-			seq[0] = new TextEvent(textData, optionData);
+			seq[0] = new TextEvent(-1, textData, optionData);
 			String[] textData2 = new String[1];
 			textData2[0] = "Sweet.";
 			String[] textData3 = new String[1];
 			textData3[0] = "Very well Mr. Bond, but now I will have to kill you.";
 			EventStream[] followupEvents = new EventStream[3];
 			Event[] seq2 = new Event[1];
-			seq2[0] = new TextEvent(textData2, new String[0]);
+			seq2[0] = new TextEvent(-1, textData2, new String[0]);
 			Event[] seq3 = new Event[1];
-			seq3[0] = new TextEvent(textData3, new String[0]);
+			seq3[0] = new TextEvent(-1, textData3, new String[0]);
 			followupEvents[0] = new EventStream(2, 2, seq2, new Event[0], -1, -1);
 			followupEvents[1] = new EventStream(3, 3, seq3, new Event[0], -1, -1);
 			followupEvents[2] = new EventStream(-1, -1, new Event[0], new Event[0], -1, -1);
-			seq[1] = new SelectionBranchEvent(followupEvents);
+			seq[1] = new SelectionBranchEvent(0, followupEvents);
 			return new EventStream(1, 1, seq, new Event[0], -1, -1);
 		}
 		return new EventStream(-1, -1, new Event[0], new Event[0], -1, -1);

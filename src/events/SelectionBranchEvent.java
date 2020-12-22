@@ -7,8 +7,8 @@ public class SelectionBranchEvent extends Event {
 	 * Creates a new SelectionBranchEvent.
 	 * @param streams The array of EventStreams to choose from.
 	 */
-	public SelectionBranchEvent(EventStream[] streams) {
-		super();
+	public SelectionBranchEvent(int inputIndex, EventStream[] streams) {
+		super(inputIndex);
 		this.streams = streams;
 	}
 	

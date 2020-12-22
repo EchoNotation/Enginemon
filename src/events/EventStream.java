@@ -70,7 +70,12 @@ public class EventStream {
 				seqIndex++;
 				
 				if(seqIndex < sequentialEvents.length) {
-					sequentialEvents[seqIndex].init(outputs[seqIndex-1]);
+					if(sequentialEvents[seqIndex].getInputIndex() == -1) {
+						sequentialEvents[seqIndex].init(-1);
+					}
+					else {
+						sequentialEvents[seqIndex].init(outputs[sequentialEvents[seqIndex].getInputIndex()]);
+					}
 				}
 			}
 		}
