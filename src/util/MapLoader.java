@@ -17,7 +17,6 @@ public class MapLoader {
 	private static HashMap<Integer, HashMap<Integer, int[][]>> tileData = new HashMap<Integer, HashMap<Integer, int[][]>>();
 	private static HashMap<Integer, HashMap<Integer, int[][]>> collisionData = new HashMap<Integer, HashMap<Integer, int[][]>>();
 	private static HashMap<Integer, HashMap<Integer, int[][]>> eventMapData = new HashMap<Integer, HashMap<Integer, int[][]>>();
-	private static HashMap<Integer, HashMap<Integer, EventStream[]>> eventData = new HashMap<Integer, HashMap<Integer, EventStream[]>>();
 	private static HashMap<Integer, HashMap<Integer, Entity[]>> entityData = new HashMap<Integer, HashMap<Integer, Entity[]>>();
 	private static HashMap<Integer, HashMap<Integer, Integer>> tilesetIDs = new HashMap<Integer, HashMap<Integer, Integer>>();
 	private static HashMap<Integer, HashMap<Integer, Integer>> musicIDs = new HashMap<Integer, HashMap<Integer, Integer>>();
@@ -101,19 +100,6 @@ public class MapLoader {
 //				}
 //			}
 			
-			//Load all of the events listed according to local ID. Events will eventually be stored in a completely different file.
-			int numberOfEvents = Integer.parseInt(br.readLine());
-			EventStream[] events = new EventStream[numberOfEvents];
-			
-			if(numberOfEvents > 0) {
-				String[] eventTokens = br.readLine().trim().split("\\s+");
-				
-				
-				for(int i = 0; i < eventTokens.length; i++) {
-					events[i] = EventTable.getEventStream(Integer.parseInt(eventTokens[i]));
-				}
-			}
-			
 			//Load all of the entities on this map according to local ID. Entities will evantually be stored in a completely different file.
 			int numberOfEntities = Integer.parseInt(br.readLine());
 			Entity[] entities = new Entity[numberOfEntities];
@@ -122,6 +108,7 @@ public class MapLoader {
 				String[] entityTokens = br.readLine().trim().split("\\s+");		
 					
 				for(int i = 0; i < entityTokens.length; i++) {
+					//System.out.println("Loaded entity!");
 					entities[i] = EntityTable.getEntity(Integer.parseInt(entityTokens[i]));
 				}
 			}		
@@ -130,7 +117,6 @@ public class MapLoader {
 				tileData.get(regionID).put(mapID, tiles);
 				collisionData.get(regionID).put(mapID, collisions);
 				entityData.get(regionID).put(mapID, entities);
-				eventData.get(regionID).put(mapID, events);
 				tilesetIDs.get(regionID).put(mapID, tilesetID);
 				musicIDs.get(regionID).put(mapID, musicID);
 				encounterTableIDs.get(regionID).put(mapID, encounterTableID);
@@ -142,8 +128,6 @@ public class MapLoader {
 				collisionData.get(regionID).put(mapID, collisions);
 				entityData.put(regionID, new HashMap<Integer, Entity[]>());
 				entityData.get(regionID).put(mapID, entities);
-				eventData.put(regionID, new HashMap<Integer, EventStream[]>());
-				eventData.get(regionID).put(mapID, events);
 				tilesetIDs.put(regionID, new HashMap<Integer, Integer>());
 				tilesetIDs.get(regionID).put(mapID, tilesetID);
 				musicIDs.put(regionID, new HashMap<Integer, Integer>());
@@ -170,7 +154,6 @@ public class MapLoader {
 	public static void swapToMap(int regionID, int mapID) {
 		currentTileData = tileData.get(regionID).get(mapID);
 		currentCollisionData = collisionData.get(regionID).get(mapID);
-		currentEventData = eventData.get(regionID).get(mapID);
 		currentEntityData = entityData.get(regionID).get(mapID);
 		currentTilesetID = tilesetIDs.get(regionID).get(mapID);
 		currentMusicID = musicIDs.get(regionID).get(mapID);

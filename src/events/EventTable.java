@@ -25,6 +25,7 @@ public class EventTable {
 	 * @param eventID The global ID of the EventStream.
 	 * @return The appropriate EventStream.
 	 */
+	@Deprecated
 	public static EventStream getEventStream(int eventID) {
 		if(eventID == 0) {
 			Event[] seq = new Event[3];
@@ -94,11 +95,7 @@ public class EventTable {
 		if(!streams.containsKey(regionID)) {
 			streams.put(regionID, new HashMap<Integer, HashMap<Integer, EventStream>>());
 		}
-		
-//		if(!streams.get(regionID).containsKey(mapID)) {
-//			streams.get(regionID).put(mapID, new HashMap<Integer, EventStream>());
-//		}
-		
+
 		try {
 			if(Variables.runningAsJar) {
 				String filename = "events/EVENTS" + regionID + "-" + mapID + ".txt";
