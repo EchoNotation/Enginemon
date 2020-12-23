@@ -1,0 +1,33 @@
+2
+0
+4
+PrintEvent
+false
+-1
+This is a test of the...
+DelayEvent
+false
+-1
+60
+PrintEvent
+false
+-1
+Sequential Event System (TM)!
+PrintEvent
+true
+1
+60
+-1
+Parallel Event System (TM)!
+1
+1
+TextEvent
+false
+-1
+3
+Hi
+Howdy
+Hello
+2
+Yes
+No

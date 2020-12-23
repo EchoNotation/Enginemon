@@ -17,7 +17,6 @@ public class EventStream {
 	private int seqIndex;
 	private boolean hasStarted;
 	private boolean readyToFinish;
-	private int x, y;
 
 	/**
 	 * Creates a new EventStream.
@@ -28,7 +27,7 @@ public class EventStream {
 	 * @param x The x coordinate where this event will be triggered. (-1 if nowhere in particular.)
 	 * @param y The y coordinate where this event will be triggered. (-1 if nowhere in particular.)
 	 */
-	public EventStream(int gID, int lID, Event[] seqEvents, Event[] parEvents, int x, int y) {
+	public EventStream(int gID, int lID, Event[] seqEvents, Event[] parEvents) {
 		this.globalID = gID;
 		this.localID = lID;
 		sequentialEvents = seqEvents;
@@ -36,8 +35,6 @@ public class EventStream {
 		parallelEventsLeft = new ArrayList<Event>();
 		hasStarted = false;
 		outputs = new int[seqEvents.length];
-		this.x = x;
-		this.y = y;
 	}
 	
 	/**
@@ -129,22 +126,6 @@ public class EventStream {
 	 */
 	public boolean hasFinished() {
 		return readyToFinish;
-	}
-	
-	/**
-	 * Returns the x coordinate of the spot where this EventStream should be triggered.
-	 * @return The x coordinate. (-1 if no tile should trigger it.)
-	 */
-	public int getX() {
-		return x;
-	}
-	
-	/**
-	 * Returns the y coordinate of the spot where this EventStream should be triggered.
-	 * @return The y coorindate. (-1 if no tile should trigger it.)
-	 */
-	public int getY() {
-		return y;
 	}
 	
 	/**

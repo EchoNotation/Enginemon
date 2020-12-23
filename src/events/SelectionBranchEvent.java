@@ -5,6 +5,7 @@ public class SelectionBranchEvent extends Event {
 	
 	/**
 	 * Creates a new SelectionBranchEvent.
+	 * @param inputIndex The index of the sequential outputs that this event should take input from.
 	 * @param streams The array of EventStreams to choose from.
 	 */
 	public SelectionBranchEvent(int inputIndex, int[] streamIndices) {

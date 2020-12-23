@@ -37,7 +37,7 @@ public class EventSequencer {
 	 */
 	public static void enqueueEventStream(EventStream toAdd) {
 		if(toAdd.getGlobalID() != -1) {
-			System.out.println("Enqueued stream!");
+			//System.out.println("Enqueued stream!");
 			eventStreamQueue.add(toAdd);
 		}
 	}

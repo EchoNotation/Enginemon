@@ -16,6 +16,7 @@ public class MapLoader {
 	
 	private static HashMap<Integer, HashMap<Integer, int[][]>> tileData = new HashMap<Integer, HashMap<Integer, int[][]>>();
 	private static HashMap<Integer, HashMap<Integer, int[][]>> collisionData = new HashMap<Integer, HashMap<Integer, int[][]>>();
+	private static HashMap<Integer, HashMap<Integer, int[][]>> eventMapData = new HashMap<Integer, HashMap<Integer, int[][]>>();
 	private static HashMap<Integer, HashMap<Integer, EventStream[]>> eventData = new HashMap<Integer, HashMap<Integer, EventStream[]>>();
 	private static HashMap<Integer, HashMap<Integer, Entity[]>> entityData = new HashMap<Integer, HashMap<Integer, Entity[]>>();
 	private static HashMap<Integer, HashMap<Integer, Integer>> tilesetIDs = new HashMap<Integer, HashMap<Integer, Integer>>();
@@ -90,7 +91,17 @@ public class MapLoader {
 				}
 			}
 			
-			//Load all of the events listed according to global ID. Events will eventually be stored in a completely different file.
+			//Load all of the event map data for the current map.
+//			int[][] eventMap = new int[mapHeight][mapWidth];
+//			for(int i = 0; i < mapHeight; i++) { 		
+//				String[] tokens = br.readLine().trim().split("\\s+");
+//				
+//				for(int j = 0; j < tokens.length; j++) {
+//					eventMap[i][j] = Integer.parseInt(tokens[j]);
+//				}
+//			}
+			
+			//Load all of the events listed according to local ID. Events will eventually be stored in a completely different file.
 			int numberOfEvents = Integer.parseInt(br.readLine());
 			EventStream[] events = new EventStream[numberOfEvents];
 			
@@ -103,7 +114,7 @@ public class MapLoader {
 				}
 			}
 			
-			//Load all of the entities on this map according to global ID.
+			//Load all of the entities on this map according to local ID. Entities will evantually be stored in a completely different file.
 			int numberOfEntities = Integer.parseInt(br.readLine());
 			Entity[] entities = new Entity[numberOfEntities];
 			

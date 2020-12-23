@@ -10,6 +10,7 @@ public class DelayEvent extends Event {
 	
 	/**
 	 * Creates a new sequential DelayEvent.
+	 * @param inputIndex The index of the sequential outputs to use as input.
 	 * @param framesToDelay The number of frames to delay before completing.
 	 */
 	public DelayEvent(int inputIndex, int framesToDelay) {

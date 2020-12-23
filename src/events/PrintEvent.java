@@ -10,6 +10,7 @@ public class PrintEvent extends Event {
 	
 	/**
 	 * Creates a new sequential PrintEvent.
+	 * @param inputIndex The index of the sequential outputs that this event should take input from.
 	 * @param message The string to be printed to the console.
 	 */
 	public PrintEvent(int inputIndex, String message) {

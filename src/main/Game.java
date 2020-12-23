@@ -1,10 +1,7 @@
 package main;
 
-import java.util.ArrayList;
-
 import entities.Player;
 import events.EventSequencer;
-import events.EventStream;
 import events.EventTable;
 import io.Camera;
 import io.ControllerManager;
@@ -58,6 +55,7 @@ public class Game {
 		gameState = GameState.WORLD;
 		
 		MapLoader.loadMap(1, 2);
+		EventTable.loadEvents(1, 2);
 		MapLoader.swapToMap(1, 2);
 		Tilesets.loadTilesets();
 		Tilesets.changeTileset(0);
@@ -77,9 +75,11 @@ public class Game {
 		for(int i = 0; i < collisionData.length; i++) {
 			eventIndices[i] = new int[collisionData[i].length];
 			for(int j = 0; j < eventIndices[i].length; j++) {			
-				eventIndices[i][j] = 1;
+				eventIndices[i][j] = -1;
 			}
 		}
+		EventSequencer.enqueueEventStream(EventTable.getEventStream(1, 2, 0));
+		EventSequencer.enqueueEventStream(EventTable.getEventStream(1, 2, 1));
 		run();
 	}
 	
@@ -175,17 +175,17 @@ public class Game {
 		boolean upPassable, downPassable, leftPassable, rightPassable;
 		int upCollision, downCollision, leftCollision, rightCollision;
 		
-		if(Variables.movingOverTile) {
-			if(Variables.movementOffset >= Constants.pixelsPerTile) {
+		if(Variables.playerMovingOverTile) {
+			if(player.getMovementOffset() >= Constants.pixelsPerTile) {
 				player.setXPos(player.getTgtXPos());
 				player.setYPos(player.getTgtYPos());
-				Variables.movementOffset = 0;
-				Variables.movingOverTile = false;
-				Variables.moveDir = MoveDirection.NONE;
+				player.setMovementOffset(0);
+				Variables.playerMovingOverTile = false;
+				player.setMoveDirection(MoveDirection.NONE);
 				
 				if(!(player.getXPos() < 0 || player.getXPos() >= eventIndices[0].length || player.getYPos() < 0 || player.getYPos() >= eventIndices.length)) {
 					if(EventSequencer.numberOfEnqueuedStreams() == 0) {
-						System.out.println("Enqueued by step!");
+						//System.out.println("Enqueued by step!");
 						EventSequencer.enqueueEventStream(EventTable.getEventStream(eventIndices[player.getYPos()][player.getXPos()]));
 					}
 				}
@@ -196,8 +196,8 @@ public class Game {
 					
 					if(upPassable) {
 						player.setTgtYPos(player.getYPos() - 1);
-						Variables.movingOverTile = true;
-						Variables.moveDir = MoveDirection.UP;
+						Variables.playerMovingOverTile = true;
+						player.setMoveDirection(MoveDirection.UP);
 					}					
 				}
 				else if(InputManager.downR) {
@@ -206,8 +206,8 @@ public class Game {
 					
 					if(downPassable) {
 						player.setTgtYPos(player.getYPos() + 1);
-						Variables.movingOverTile = true;
-						Variables.moveDir = MoveDirection.DOWN;
+						Variables.playerMovingOverTile = true;
+						player.setMoveDirection(MoveDirection.DOWN);
 					}				
 				}
 				else if(InputManager.leftR) {
@@ -216,8 +216,8 @@ public class Game {
 					
 					if(leftPassable) {
 						player.setTgtXPos(player.getXPos() - 1);
-						Variables.movingOverTile = true;
-						Variables.moveDir = MoveDirection.LEFT;
+						Variables.playerMovingOverTile = true;
+						player.setMoveDirection(MoveDirection.LEFT);
 					}				
 				}
 				else if(InputManager.rightR) {
@@ -226,17 +226,17 @@ public class Game {
 					
 					if(rightPassable) {
 						player.setTgtXPos(player.getXPos() + 1);
-						Variables.movingOverTile = true;
-						Variables.moveDir = MoveDirection.RIGHT;
+						Variables.playerMovingOverTile = true;
+						player.setMoveDirection(MoveDirection.RIGHT);
 					}				
 				}
 				
-				if(Variables.movingOverTile) {
-					Variables.tileCrossSpeed = InputManager.cancelR ? Constants.pixelsPerFrameRunning : Constants.pixelsPerFrameWalking;
+				if(Variables.playerMovingOverTile) {
+					Variables.playerTileCrossSpeed = InputManager.cancelR ? Constants.pixelsPerFrameRunning : Constants.pixelsPerFrameWalking;
 				}
 			}
 			else {
-				Variables.movementOffset += Variables.tileCrossSpeed;
+				player.setMovementOffset(player.getMovementOffset() + Variables.playerTileCrossSpeed);
 			}
 		}
 		else {
@@ -246,8 +246,8 @@ public class Game {
 				
 				if(upPassable) {
 					player.setTgtYPos(player.getYPos() - 1);
-					Variables.movingOverTile = true;
-					Variables.moveDir = MoveDirection.UP;
+					Variables.playerMovingOverTile = true;
+					player.setMoveDirection(MoveDirection.UP);
 				}		
 			}
 			else if(InputManager.downR) {
@@ -256,8 +256,8 @@ public class Game {
 				
 				if(downPassable) {
 					player.setTgtYPos(player.getYPos() + 1);
-					Variables.movingOverTile = true;
-					Variables.moveDir = MoveDirection.DOWN;
+					Variables.playerMovingOverTile = true;
+					player.setMoveDirection(MoveDirection.DOWN);
 				}			
 			}
 			else if(InputManager.leftR) {
@@ -266,8 +266,8 @@ public class Game {
 				
 				if(leftPassable) {
 					player.setTgtXPos(player.getXPos() - 1);
-					Variables.movingOverTile = true;
-					Variables.moveDir = MoveDirection.LEFT;
+					Variables.playerMovingOverTile = true;
+					player.setMoveDirection(MoveDirection.LEFT);
 				}			
 			}
 			else if(InputManager.rightR) {
@@ -276,13 +276,13 @@ public class Game {
 				
 				if(rightPassable) {
 					player.setTgtXPos(player.getXPos() + 1);
-					Variables.movingOverTile = true;
-					Variables.moveDir = MoveDirection.RIGHT;
+					Variables.playerMovingOverTile = true;
+					player.setMoveDirection(MoveDirection.RIGHT);
 				}			
 			}
 			
-			if(Variables.movingOverTile) {
-				Variables.tileCrossSpeed = InputManager.cancelR ? Constants.pixelsPerFrameRunning : Constants.pixelsPerFrameWalking;
+			if(Variables.playerMovingOverTile) {
+				Variables.playerTileCrossSpeed = InputManager.cancelR ? Constants.pixelsPerFrameRunning : Constants.pixelsPerFrameWalking;
 			}
 		}		
 	}

@@ -19,6 +19,7 @@ public class TextEvent extends Event {
 
 	/**
 	 * Creates a new sequential TextEvent.
+	 * @param inputIndex The index of the sequential outputs to use as input.
 	 * @param textData The strings that are to be displayed.
 	 * @param optionText Any text options the user may choose from, which will be provided after the last message.
 	 */
@@ -43,7 +44,7 @@ public class TextEvent extends Event {
 	}
 	
 	/**
-	 * Runs once when time to start.
+	 * Runs once when it is time to start.
 	 * @param input The input value for this TextEvent.
 	 */
 	@Override
@@ -133,7 +134,7 @@ public class TextEvent extends Event {
 	public int end() {
 		hasStarted = false;
 		readyToFinish = false;
-		System.out.println("Chose option: " + chosenOption);
+		//System.out.println("Chose option: " + chosenOption);
 		return chosenOption;
 	}
 }

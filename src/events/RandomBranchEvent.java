@@ -9,7 +9,7 @@ public class RandomBranchEvent extends Event {
 	
 	/**
 	 * Creates a new sequential RandomBranchEvent.
-	 * @param inputIndex The input that this event should draw from.
+	 * @param inputIndex The index of the sequential outputs that this should take input from.
 	 * @param streamIndices The indices of the EventStreams that should be taken.
 	 * @param inputProbs The corresponding probabilities for each EventStream (should add up to 100).
 	 */

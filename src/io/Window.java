@@ -123,23 +123,22 @@ public class Window {
 				int xOffset = 0;
 				int yOffset = 0;
 				
-				switch(Variables.moveDir) {
+				switch(player.getMoveDirection()) {
 				case UP:
-					yOffset = -Variables.movementOffset;
+					yOffset = -player.getMovementOffset();
 					break;
 				case DOWN:
-					yOffset = Variables.movementOffset;
+					yOffset = player.getMovementOffset();
 					break;
 				case LEFT:
-					xOffset = -Variables.movementOffset;
+					xOffset = -player.getMovementOffset();
 					break;
 				case RIGHT:
-					xOffset = Variables.movementOffset;
+					xOffset = player.getMovementOffset();
 					break;
 				case NONE:
 					break;
 				default:
-					System.out.println("Invalid moveDir when calculating x and y offsets! Direction: " + Variables.moveDir);
 					break;
 				}
 				postShiftingImg = img.getSubimage(pixelsPerTile + xOffset, pixelsPerTile + yOffset, pixelsPerTile * (tilesPerRow - 2), pixelsPerTile * (tilesPerColumn - 2));
@@ -148,23 +147,22 @@ public class Window {
 				g.fillRect(widthOffset, heightOffset, 12, 12);
 			}
 			else if(cMode == CameraMode.FREE) {
-				switch(Variables.moveDir) {
+				switch(player.getMoveDirection()) {
 				case UP:
-					heightOffset -= Variables.movementOffset;
+					heightOffset -= player.getMovementOffset();
 					break;
 				case DOWN:
-					heightOffset += Variables.movementOffset;
+					heightOffset += player.getMovementOffset();
 					break;
 				case LEFT:
-					widthOffset -= Variables.movementOffset;
+					widthOffset -= player.getMovementOffset();
 					break;
 				case RIGHT:
-					widthOffset += Variables.movementOffset;
+					widthOffset += player.getMovementOffset();
 					break;
 				case NONE:
 					break;
 				default:
-					System.out.println("Invalid moveDir when calculating x and y offsets! Direction: " + Variables.moveDir);
 					break;
 				}
 				postShiftingImg = img.getSubimage(pixelsPerTile, pixelsPerTile, pixelsPerTile * (tilesPerRow - 2), pixelsPerTile * (tilesPerColumn - 2));
